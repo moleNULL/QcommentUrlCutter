@@ -1,10 +1,21 @@
 ﻿namespace QcommentUrlCutter
 {
-    internal class Program
+    public class Program
     {
-        static void Main(string[] args)
+        [STAThread]
+        public static void Main(string[] args)
         {
-            Console.WriteLine(" ");
+            try
+            {
+                Startup.Run();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+            Console.Write("\nPress any key to continue . . .");
+            Console.ReadLine();
         }
     }
 }
