@@ -1,21 +1,12 @@
-﻿namespace QcommentUrlCutter
+namespace QcommentUrlCutter
 {
-    public class Program
+    public static class Program
     {
         [STAThread]
-        public static void Main(string[] args)
+        public static void Main()
         {
-            try
-            {
-                Startup.Run();
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-
-            Console.Write("\nPress any key to continue . . .");
-            Console.ReadLine();
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm());
         }
     }
 }
