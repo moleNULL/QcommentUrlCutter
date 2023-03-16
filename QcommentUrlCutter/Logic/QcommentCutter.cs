@@ -5,8 +5,6 @@ namespace QcommentUrlCutter.Logic
 {
     public class QcommentCutter
     {
-        private const string SoundDogBarking = "dog_barking.wav";
-        private const string SoundFemaleGasp = "female_gasp.wav";
         private const int ClipboardCheckIntervalInMs = 500;
 
         private readonly string _prefix;
@@ -40,7 +38,7 @@ namespace QcommentUrlCutter.Logic
 
                             Clipboard.SetText(decodedUrl);
 
-                            PlaySound(SoundDogBarking);
+                            PlaySound(_state.SoundFile);
                             PrintQcommentText($"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}");
                         }
                         else
@@ -56,8 +54,13 @@ namespace QcommentUrlCutter.Logic
             }
         }
 
-        private void PlaySound(string fileName)
+        private void PlaySound(string? fileName)
         {
+            if (fileName is null)
+            {
+                return;
+            }
+
             using (Stream? stream = Assembly.GetExecutingAssembly()
                                 .GetManifestResourceStream($"QcommentUrlCutter.Files.{fileName}"))
             {

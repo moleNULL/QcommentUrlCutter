@@ -35,11 +35,15 @@ namespace QcommentUrlCutter
             ButtonStart = new Button();
             ButtonStop = new Button();
             clipboardTextBox = new TextBox();
+            DogBarkingButton = new RadioButton();
+            FemaleGaspButton = new RadioButton();
+            NoneButton = new RadioButton();
+            SoundsLabel = new Label();
             SuspendLayout();
             // 
             // ButtonStart
             // 
-            ButtonStart.Location = new Point(12, 72);
+            ButtonStart.Location = new Point(12, 101);
             ButtonStart.Name = "ButtonStart";
             ButtonStart.Size = new Size(75, 23);
             ButtonStart.TabIndex = 0;
@@ -50,7 +54,7 @@ namespace QcommentUrlCutter
             // ButtonStop
             // 
             ButtonStop.Enabled = false;
-            ButtonStop.Location = new Point(12, 137);
+            ButtonStop.Location = new Point(12, 157);
             ButtonStop.Name = "ButtonStop";
             ButtonStop.Size = new Size(75, 23);
             ButtonStop.TabIndex = 1;
@@ -60,18 +64,68 @@ namespace QcommentUrlCutter
             // 
             // clipboardTextBox
             // 
-            clipboardTextBox.Location = new Point(93, 17);
+            clipboardTextBox.Location = new Point(93, 33);
             clipboardTextBox.Multiline = true;
             clipboardTextBox.Name = "clipboardTextBox";
             clipboardTextBox.ScrollBars = ScrollBars.Both;
             clipboardTextBox.Size = new Size(544, 243);
             clipboardTextBox.TabIndex = 2;
             // 
+            // DogBarkingButton
+            // 
+            DogBarkingButton.AutoSize = true;
+            DogBarkingButton.Checked = true;
+            DogBarkingButton.Location = new Point(227, 6);
+            DogBarkingButton.Name = "DogBarkingButton";
+            DogBarkingButton.Size = new Size(115, 19);
+            DogBarkingButton.TabIndex = 3;
+            DogBarkingButton.TabStop = true;
+            DogBarkingButton.Text = "dog_barking.wav";
+            DogBarkingButton.UseVisualStyleBackColor = true;
+            DogBarkingButton.CheckedChanged += DogBarkingButton_CheckedChanged;
+            // 
+            // FemaleGaspButton
+            // 
+            FemaleGaspButton.AutoSize = true;
+            FemaleGaspButton.Location = new Point(381, 6);
+            FemaleGaspButton.Name = "FemaleGaspButton";
+            FemaleGaspButton.Size = new Size(115, 19);
+            FemaleGaspButton.TabIndex = 4;
+            FemaleGaspButton.Text = "female_gasp.wav";
+            FemaleGaspButton.UseVisualStyleBackColor = true;
+            FemaleGaspButton.CheckedChanged += FemaleGaspButton_CheckedChanged;
+            // 
+            // NoneButton
+            // 
+            NoneButton.AutoSize = true;
+            NoneButton.Location = new Point(540, 6);
+            NoneButton.Name = "NoneButton";
+            NoneButton.Size = new Size(52, 19);
+            NoneButton.TabIndex = 5;
+            NoneButton.Text = "none";
+            NoneButton.UseVisualStyleBackColor = true;
+            NoneButton.CheckedChanged += NoneButton_CheckedChanged;
+            // 
+            // SoundsLabel
+            // 
+            SoundsLabel.AutoSize = true;
+            SoundsLabel.Font = new Font("Tempus Sans ITC", 11.25F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point);
+            SoundsLabel.ForeColor = Color.Brown;
+            SoundsLabel.Location = new Point(141, 6);
+            SoundsLabel.Name = "SoundsLabel";
+            SoundsLabel.Size = new Size(65, 19);
+            SoundsLabel.TabIndex = 6;
+            SoundsLabel.Text = "Sounds:";
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(645, 272);
+            ClientSize = new Size(645, 288);
+            Controls.Add(NoneButton);
+            Controls.Add(DogBarkingButton);
+            Controls.Add(FemaleGaspButton);
+            Controls.Add(SoundsLabel);
             Controls.Add(clipboardTextBox);
             Controls.Add(ButtonStop);
             Controls.Add(ButtonStart);
@@ -89,5 +143,9 @@ namespace QcommentUrlCutter
         private Button ButtonStart;
         private Button ButtonStop;
         private TextBox clipboardTextBox;
+        private RadioButton DogBarkingButton;
+        private RadioButton FemaleGaspButton;
+        private RadioButton NoneButton;
+        private Label SoundsLabel;
     }
 }

@@ -7,10 +7,13 @@ namespace QcommentUrlCutter
         private readonly ApplicationState _state;
         public MainForm()
         {
+            _state = new ApplicationState();
+
             InitializeComponent();
             Text += Helpers.GetAppFileVersion();
 
-            _state = new ApplicationState();
+            DogBarkingButton_CheckedChanged(this, EventArgs.Empty);
+            ButtonStart_Click(this, EventArgs.Empty);
         }
 
         private async void ButtonStart_Click(object sender, EventArgs e)
@@ -37,12 +40,34 @@ namespace QcommentUrlCutter
             ButtonStart.Enabled = true;
             ButtonStop.Enabled = false;
         }
+
+        private void DogBarkingButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (DogBarkingButton.Checked)
+            {
+                _state.SoundFile = DogBarkingButton.Text;
+            }
+        }
+
+        private void FemaleGaspButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (FemaleGaspButton.Checked)
+            {
+                _state.SoundFile = FemaleGaspButton.Text;
+            }
+        }
+
+        private void NoneButton_CheckedChanged(object sender, EventArgs e)
+        {
+            if (NoneButton.Checked)
+            {
+                _state.SoundFile = null;
+            }
+        }
     }
 }
 
 /*
      TODO:
-1. Add RadioButton to switch between sounds (bark, gasp and none) with memory
-2. Press startbutton on launch
-3. No icon for the process in Task Manager
+1. Remember selected RadioButton -> settings in %appdata%
  */
