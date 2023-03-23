@@ -1,19 +1,44 @@
+using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Logic;
+using QcommentUrlCutter.Models;
 
 namespace QcommentUrlCutter
 {
     public partial class MainForm : Form
     {
+        private const string RadioButton1Name = "RadioButton1";
+        private const string RadioButton2Name = "RadioButton2";
+
         private readonly ApplicationState _state;
+        private readonly ApplicationSettings _appsettings = null!;
+        private readonly ILogger _logger;
+        private readonly string _applicationTitle = null!;
         public MainForm()
         {
+            InitializeComponent();
+
+            _logger = new FileLogger();
             _state = new ApplicationState();
 
-            InitializeComponent();
-            Text += Helpers.GetAppFileVersion();
+            try
+            {
+                _applicationTitle = Text + Helpers.GetAppFileVersion();
+                Text = _applicationTitle;
 
-            DogBarkingButton_CheckedChanged(this, EventArgs.Empty);
-            ButtonStart_Click(this, EventArgs.Empty);
+                _appsettings = Helpers.GetApplicationSettings();
+
+                AssingRadioButtonFileNames();
+                EnableRadioButton(_appsettings.RadioButtonChoice);
+
+                if (_appsettings.IsButtonClickedOnLaunch)
+                {
+                    ButtonStart_Click(this, EventArgs.Empty);
+                }
+            }
+            catch (Exception ex)
+            {
+                ProcessException(nameof(MainForm), ex.Message);
+            }
         }
 
         private async void ButtonStart_Click(object sender, EventArgs e)
@@ -24,12 +49,12 @@ namespace QcommentUrlCutter
 
             try
             {
-                var qCutter = new QcommentCutter(_state, clipboardTextBox);
+                var qCutter = new QcommentCutter(_state, clipboardTextBox, _logger, EnableNoneButton);
                 await qCutter.Run();
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message, "Exception", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                ProcessException(nameof(ButtonStart_Click), ex.Message);
             }
         }
 
@@ -41,19 +66,29 @@ namespace QcommentUrlCutter
             ButtonStop.Enabled = false;
         }
 
-        private void DogBarkingButton_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton1_CheckedChanged(object sender, EventArgs e)
         {
-            if (DogBarkingButton.Checked)
+            if (RadioButton1.Checked)
             {
-                _state.SoundFile = DogBarkingButton.Text;
+                if (!IsAppliedNoneButtonIfSoundMissing(RadioButton1))
+                {
+                    _state.SoundFile = _appsettings.SoundPathFirst;
+                }
+
+                Helpers.SaveRadioButtonChoiceToFile(_appsettings, RadioButton1.Name);
             }
         }
 
-        private void FemaleGaspButton_CheckedChanged(object sender, EventArgs e)
+        private void RadioButton2_CheckedChanged(object sender, EventArgs e)
         {
-            if (FemaleGaspButton.Checked)
+            if (RadioButton2.Checked)
             {
-                _state.SoundFile = FemaleGaspButton.Text;
+                if (!IsAppliedNoneButtonIfSoundMissing(RadioButton2))
+                {
+                    _state.SoundFile = _appsettings.SoundPathSecond;
+                }
+
+                Helpers.SaveRadioButtonChoiceToFile(_appsettings, RadioButton2.Name);
             }
         }
 
@@ -62,12 +97,96 @@ namespace QcommentUrlCutter
             if (NoneButton.Checked)
             {
                 _state.SoundFile = null;
+                Helpers.SaveRadioButtonChoiceToFile(_appsettings, NoneButton.Name);
             }
+        }
+
+        private void ProcessException(string methodName, string exceptionMessage)
+        {
+            MessageBox.Show(
+                exceptionMessage,
+                $"{_applicationTitle} | {methodName} Exception",
+                MessageBoxButtons.OK,
+                MessageBoxIcon.Error);
+
+            _logger.Log($"{methodName} Exception: {exceptionMessage}");
+
+            Environment.Exit(0);
+        }
+
+        private void AssingRadioButtonFileNames()
+        {
+            string? sound1 = Path.GetFileName(_appsettings.SoundPathFirst);
+            if (string.IsNullOrWhiteSpace(sound1))
+            {
+                RadioButton1.Text = "?";
+            }
+            else
+            {
+                RadioButton1.Text = sound1;
+            }
+
+            string? sound2 = Path.GetFileName(_appsettings.SoundPathSecond);
+            if (string.IsNullOrWhiteSpace(sound2))
+            {
+                RadioButton2.Text = "?";
+            }
+            else
+            {
+                RadioButton2.Text = sound2;
+            }
+        }
+
+        private void EnableRadioButton(string? radioButtonName)
+        {
+            if (radioButtonName == RadioButton1Name)
+            {
+                if (!IsAppliedNoneButtonIfSoundMissing(RadioButton1))
+                {
+                    RadioButton1.Checked = true;
+                    _state.SoundFile = _appsettings.SoundPathFirst;
+                }
+            }
+            else if (radioButtonName == RadioButton2Name)
+            {
+                if (!IsAppliedNoneButtonIfSoundMissing(RadioButton2))
+                {
+                    RadioButton2.Checked = true;
+                    _state.SoundFile = _appsettings.SoundPathSecond;
+                }
+            }
+            else
+            {
+                EnableNoneButton();
+            }
+        }
+
+        private bool IsAppliedNoneButtonIfSoundMissing(RadioButton radioButton)
+        {
+            if (radioButton.Text == "?")
+            {
+                EnableNoneButton();
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void EnableNoneButton()
+        {
+            NoneButton.Checked = true;
+            _state.SoundFile = null;
         }
     }
 }
 
 /*
-     TODO:
-1. Remember selected RadioButton -> settings in %appdata%
+    TODO:
+1. count when stop/start -> need count to be fixed
+2. check if Files/*.wav exist and if not - recreate them
+
+v3.0
+    -settings: different form to change appsettings through it
+    -settings: ability to choose any *.wav file on disk
  */

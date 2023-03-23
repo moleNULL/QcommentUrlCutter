@@ -35,8 +35,8 @@ namespace QcommentUrlCutter
             ButtonStart = new Button();
             ButtonStop = new Button();
             clipboardTextBox = new TextBox();
-            DogBarkingButton = new RadioButton();
-            FemaleGaspButton = new RadioButton();
+            RadioButton1 = new RadioButton();
+            RadioButton2 = new RadioButton();
             NoneButton = new RadioButton();
             SoundsLabel = new Label();
             SuspendLayout();
@@ -71,29 +71,29 @@ namespace QcommentUrlCutter
             clipboardTextBox.Size = new Size(544, 243);
             clipboardTextBox.TabIndex = 2;
             // 
-            // DogBarkingButton
+            // RadioButton1
             // 
-            DogBarkingButton.AutoSize = true;
-            DogBarkingButton.Checked = true;
-            DogBarkingButton.Location = new Point(227, 6);
-            DogBarkingButton.Name = "DogBarkingButton";
-            DogBarkingButton.Size = new Size(115, 19);
-            DogBarkingButton.TabIndex = 3;
-            DogBarkingButton.TabStop = true;
-            DogBarkingButton.Text = "dog_barking.wav";
-            DogBarkingButton.UseVisualStyleBackColor = true;
-            DogBarkingButton.CheckedChanged += DogBarkingButton_CheckedChanged;
+            RadioButton1.AutoSize = true;
+            RadioButton1.Checked = true;
+            RadioButton1.Location = new Point(227, 6);
+            RadioButton1.Name = "RadioButton1";
+            RadioButton1.Size = new Size(124, 19);
+            RadioButton1.TabIndex = 3;
+            RadioButton1.TabStop = true;
+            RadioButton1.Text = "RadioButton1.mp3";
+            RadioButton1.UseVisualStyleBackColor = true;
+            RadioButton1.CheckedChanged += RadioButton1_CheckedChanged;
             // 
-            // FemaleGaspButton
+            // RadioButton2
             // 
-            FemaleGaspButton.AutoSize = true;
-            FemaleGaspButton.Location = new Point(381, 6);
-            FemaleGaspButton.Name = "FemaleGaspButton";
-            FemaleGaspButton.Size = new Size(115, 19);
-            FemaleGaspButton.TabIndex = 4;
-            FemaleGaspButton.Text = "female_gasp.wav";
-            FemaleGaspButton.UseVisualStyleBackColor = true;
-            FemaleGaspButton.CheckedChanged += FemaleGaspButton_CheckedChanged;
+            RadioButton2.AutoSize = true;
+            RadioButton2.Location = new Point(381, 6);
+            RadioButton2.Name = "RadioButton2";
+            RadioButton2.Size = new Size(124, 19);
+            RadioButton2.TabIndex = 4;
+            RadioButton2.Text = "RadioButton2.mp3";
+            RadioButton2.UseVisualStyleBackColor = true;
+            RadioButton2.CheckedChanged += RadioButton2_CheckedChanged;
             // 
             // NoneButton
             // 
@@ -121,10 +121,10 @@ namespace QcommentUrlCutter
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(645, 288);
+            ClientSize = new Size(645, 281);
             Controls.Add(NoneButton);
-            Controls.Add(DogBarkingButton);
-            Controls.Add(FemaleGaspButton);
+            Controls.Add(RadioButton1);
+            Controls.Add(RadioButton2);
             Controls.Add(SoundsLabel);
             Controls.Add(clipboardTextBox);
             Controls.Add(ButtonStop);
@@ -133,6 +133,7 @@ namespace QcommentUrlCutter
             Icon = (Icon)resources.GetObject("$this.Icon");
             MaximizeBox = false;
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "QcommentUrlCutter by moleNULL";
             ResumeLayout(false);
             PerformLayout();
@@ -143,8 +144,8 @@ namespace QcommentUrlCutter
         private Button ButtonStart;
         private Button ButtonStop;
         private TextBox clipboardTextBox;
-        private RadioButton DogBarkingButton;
-        private RadioButton FemaleGaspButton;
+        private RadioButton RadioButton1;
+        private RadioButton RadioButton2;
         private RadioButton NoneButton;
         private Label SoundsLabel;
     }

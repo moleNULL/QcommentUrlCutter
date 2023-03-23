@@ -1,22 +1,30 @@
 ﻿using System.Media;
-using System.Reflection;
+using QcommentUrlCutter.Logger;
+using QcommentUrlCutter.Models;
 
 namespace QcommentUrlCutter.Logic
 {
     public class QcommentCutter
     {
         private const int ClipboardCheckIntervalInMs = 500;
+        private const string QcommentText = "QcommentText";
+        private const string ClipboardText = "ClipboardText";
 
-        private readonly string _prefix;
         private readonly TextBox _clipboardTextBox;
         private readonly ApplicationState _state;
+        private readonly ApplicationSettings _appsettings;
+        private readonly ILogger _logger;
+        private readonly Action _enableNoneButton;
 
-        public QcommentCutter(ApplicationState state, TextBox clipboardTextBox)
+        public QcommentCutter(
+            ApplicationState state, TextBox clipboardTextBox, ILogger logger, Action enableNoneButton)
         {
-            _prefix = "https://qcomment.ru/site/go?url=";
+            _appsettings = Helpers.GetApplicationSettings();
 
             _state = state;
             _clipboardTextBox = clipboardTextBox;
+            _logger = logger;
+            _enableNoneButton = enableNoneButton;
         }
 
         public async Task Run()
@@ -31,19 +39,13 @@ namespace QcommentUrlCutter.Logic
 
                     if (!string.Equals(clipboardData, oldClipboardData))
                     {
-                        if (clipboardData.StartsWith(_prefix))
+                        if (clipboardData.StartsWith(_appsettings.UrlPrefix))
                         {
-                            string encodedUrl = clipboardData[_prefix.Length..];
-                            string decodedUrl = Uri.UnescapeDataString(encodedUrl);
-
-                            Clipboard.SetText(decodedUrl);
-
-                            PlaySound(_state.SoundFile);
-                            PrintQcommentText($"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}");
+                            PerformUrlCut(clipboardData);
                         }
                         else
                         {
-                            PrintClipboardText($"{++_state.CountOutput}. Clipboard: {clipboardData}");
+                            PrintText($"{++_state.CountOutput}. Clipboard: {clipboardData}", ClipboardText);
                         }
 
                         oldClipboardData = clipboardData;
@@ -54,6 +56,17 @@ namespace QcommentUrlCutter.Logic
             }
         }
 
+        private void PerformUrlCut(string clipboardData)
+        {
+            string encodedUrl = clipboardData[_appsettings.UrlPrefix.Length..];
+            string decodedUrl = Uri.UnescapeDataString(encodedUrl);
+
+            Clipboard.SetText(decodedUrl);
+
+            PlaySound(_state.SoundFile);
+            PrintText($"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}", QcommentText);
+        }
+
         private void PlaySound(string? fileName)
         {
             if (fileName is null)
@@ -61,32 +74,34 @@ namespace QcommentUrlCutter.Logic
                 return;
             }
 
-            using (Stream? stream = Assembly.GetExecutingAssembly()
-                                .GetManifestResourceStream($"QcommentUrlCutter.Files.{fileName}"))
+            try
             {
-                if (stream is not null)
-                {
-                    var player = new SoundPlayer(stream);
-                    player.Play();
-                }
+                var player = new SoundPlayer(fileName);
+                player.Play();
+            }
+            catch (Exception ex)
+            {
+                SystemSounds.Hand.Play();
+                _enableNoneButton();
+
+                _logger.Log($"[SoundPlayer exception]: {ex.Message} - (File: {fileName})");
             }
         }
 
-        private void PrintQcommentText(string text)
+        private void PrintText(string text, string textType)
         {
-            _clipboardTextBox.AppendText(Environment.NewLine);
-
-            _clipboardTextBox.AppendText(text);
-
-            _clipboardTextBox.AppendText(Environment.NewLine);
-            _clipboardTextBox.AppendText(Environment.NewLine);
-        }
-
-        private void PrintClipboardText(string text)
-        {
-            _clipboardTextBox.AppendText(text);
-
-            _clipboardTextBox.AppendText(Environment.NewLine);
+            if (textType == QcommentText)
+            {
+                _clipboardTextBox.AppendText(Environment.NewLine);
+                _clipboardTextBox.AppendText(text);
+                _clipboardTextBox.AppendText(Environment.NewLine);
+                _clipboardTextBox.AppendText(Environment.NewLine);
+            }
+            else if (textType == ClipboardText)
+            {
+                _clipboardTextBox.AppendText(text);
+                _clipboardTextBox.AppendText(Environment.NewLine);
+            }
         }
     }
 }

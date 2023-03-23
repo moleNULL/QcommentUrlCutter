@@ -1,4 +1,4 @@
-﻿namespace QcommentUrlCutter.Logic
+﻿namespace QcommentUrlCutter.Models
 {
     public class ApplicationState
     {
