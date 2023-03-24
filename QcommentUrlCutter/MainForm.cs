@@ -1,14 +1,11 @@
+using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Logger;
-using QcommentUrlCutter.Logic;
 using QcommentUrlCutter.Models;
 
 namespace QcommentUrlCutter
 {
     public partial class MainForm : Form
     {
-        private const string RadioButton1Name = "RadioButton1";
-        private const string RadioButton2Name = "RadioButton2";
-
         private readonly ApplicationState _state;
         private readonly ApplicationSettings _appsettings = null!;
         private readonly ILogger _logger;
@@ -22,10 +19,12 @@ namespace QcommentUrlCutter
 
             try
             {
-                _applicationTitle = Text + Helpers.GetAppFileVersion();
+                _applicationTitle = Text + ApplicationHelper.GetApplicationFileVersion();
                 Text = _applicationTitle;
 
-                _appsettings = Helpers.GetApplicationSettings();
+                FileHelper.RecreateAppsettingsIfNotExists(_logger);
+                FileHelper.RecreateSoundsIfNotExist(_logger);
+                _appsettings = SettingsHelper.GetApplicationSettings();
 
                 AssingRadioButtonFileNames();
                 EnableRadioButton(_appsettings.RadioButtonChoice);
@@ -61,6 +60,7 @@ namespace QcommentUrlCutter
         private void ButtonStop_Click(object sender, EventArgs e)
         {
             _state.MustRun = false;
+            _state.CountOutput--; // when switching between Start/Stop the CountOutput won't be incremented
 
             ButtonStart.Enabled = true;
             ButtonStop.Enabled = false;
@@ -75,7 +75,7 @@ namespace QcommentUrlCutter
                     _state.SoundFile = _appsettings.SoundPathFirst;
                 }
 
-                Helpers.SaveRadioButtonChoiceToFile(_appsettings, RadioButton1.Name);
+                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton1.Name);
             }
         }
 
@@ -88,7 +88,7 @@ namespace QcommentUrlCutter
                     _state.SoundFile = _appsettings.SoundPathSecond;
                 }
 
-                Helpers.SaveRadioButtonChoiceToFile(_appsettings, RadioButton2.Name);
+                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton2.Name);
             }
         }
 
@@ -97,7 +97,7 @@ namespace QcommentUrlCutter
             if (NoneButton.Checked)
             {
                 _state.SoundFile = null;
-                Helpers.SaveRadioButtonChoiceToFile(_appsettings, NoneButton.Name);
+                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, NoneButton.Name);
             }
         }
 
@@ -116,30 +116,13 @@ namespace QcommentUrlCutter
 
         private void AssingRadioButtonFileNames()
         {
-            string? sound1 = Path.GetFileName(_appsettings.SoundPathFirst);
-            if (string.IsNullOrWhiteSpace(sound1))
-            {
-                RadioButton1.Text = "?";
-            }
-            else
-            {
-                RadioButton1.Text = sound1;
-            }
-
-            string? sound2 = Path.GetFileName(_appsettings.SoundPathSecond);
-            if (string.IsNullOrWhiteSpace(sound2))
-            {
-                RadioButton2.Text = "?";
-            }
-            else
-            {
-                RadioButton2.Text = sound2;
-            }
+            RadioButton1.Text = GetSoundName(_appsettings.SoundPathFirst);
+            RadioButton2.Text = GetSoundName(_appsettings.SoundPathSecond);
         }
 
         private void EnableRadioButton(string? radioButtonName)
         {
-            if (radioButtonName == RadioButton1Name)
+            if (radioButtonName == Constants.RadioButton1Name)
             {
                 if (!IsAppliedNoneButtonIfSoundMissing(RadioButton1))
                 {
@@ -147,7 +130,7 @@ namespace QcommentUrlCutter
                     _state.SoundFile = _appsettings.SoundPathFirst;
                 }
             }
-            else if (radioButtonName == RadioButton2Name)
+            else if (radioButtonName == Constants.RadioButton2Name)
             {
                 if (!IsAppliedNoneButtonIfSoundMissing(RadioButton2))
                 {
@@ -178,13 +161,33 @@ namespace QcommentUrlCutter
             NoneButton.Checked = true;
             _state.SoundFile = null;
         }
+
+        private string GetSoundName(string? soundPath)
+        {
+            string? soundName = Path.GetFileName(soundPath);
+            if (string.IsNullOrWhiteSpace(soundName) || soundName.Length < Constants.MinSoundNameLength)
+            {
+                return "?";
+            }
+
+            if (soundName.Length < Constants.MaxSoundNameLength)
+            {
+                return soundName;
+            }
+            else
+            {
+                string soundNameWithoutExtension = Path.GetFileNameWithoutExtension(soundName);
+
+                return soundNameWithoutExtension[..Constants.MaxSoundNameWithoutExtension]
+                    + ".." + Path.GetExtension(soundName);
+            }
+        }
     }
 }
 
 /*
     TODO:
-1. count when stop/start -> need count to be fixed
-2. check if Files/*.wav exist and if not - recreate them
+1. Apply SOLID principles to the MainForm
 
 v3.0
     -settings: different form to change appsettings through it

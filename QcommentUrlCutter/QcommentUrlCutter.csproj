@@ -9,27 +9,28 @@
 	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	<CodeAnalysisRuleSet>settings.ruleset</CodeAnalysisRuleSet>
 	<NoWarn>SA0001;SA1633;SA1200;IDE0063;CA1822</NoWarn>
-    <ApplicationIcon>Files\_icon.ico</ApplicationIcon>
+    <ApplicationIcon>Files\Icons\icon.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Authors>moleNULL</Authors>
     <Company />
     <Product>QcommentUrlCutter</Product>
     <Copyright>Copyright (C) 2023</Copyright>
     <Description>Application to cut unnecessary URL appended by Qcomment to the required URL and copy processed URL to the clipboard)</Description>
-    <PackageIcon>_icon.png</PackageIcon>
-    <AssemblyVersion>2.0</AssemblyVersion>
-    <FileVersion>2.0</FileVersion>
+    <PackageIcon>icon.png</PackageIcon>
+    <AssemblyVersion>2.2</AssemblyVersion>
+    <FileVersion>2.2</FileVersion>
   </PropertyGroup>
-
-  <ItemGroup>
-    <None Remove="appsettings.json" />
-  </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="appsettings.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </EmbeddedResource>
-    <Content Include="Files\_icon.ico" />
+    <EmbeddedResource Include="Files\Sounds\dog_barking.wav" />
+    <EmbeddedResource Include="Files\Sounds\female_gasp.wav" />
+    <EmbeddedResource Include="Files\Sounds\finished_sound.wav" />
+    <EmbeddedResource Include="Files\Sounds\good_sound.wav" />
+    <EmbeddedResource Include="Files\Sounds\success_sound.wav" />
+    <Content Include="Files\Icons\icon.ico" />
   </ItemGroup>
 
   <ItemGroup>
@@ -38,36 +39,5 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
   </ItemGroup>
-
-  <ItemGroup>
-    <None Update="Files\dog_barking.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\female_gasp.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\finished_sound.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\finished_sound.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\good_sound.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\good_sound.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\success_sound.mp3">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\success_sound.wav">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="Files\_icon.png">
-      <Pack>True</Pack>
-      <PackagePath>\</PackagePath>
-    </None>
-  </ItemGroup>
-
+	
 </Project>

@@ -77,10 +77,10 @@ namespace QcommentUrlCutter
             RadioButton1.Checked = true;
             RadioButton1.Location = new Point(227, 6);
             RadioButton1.Name = "RadioButton1";
-            RadioButton1.Size = new Size(124, 19);
+            RadioButton1.Size = new Size(121, 19);
             RadioButton1.TabIndex = 3;
             RadioButton1.TabStop = true;
-            RadioButton1.Text = "RadioButton1.mp3";
+            RadioButton1.Text = "RadioButton1.wav";
             RadioButton1.UseVisualStyleBackColor = true;
             RadioButton1.CheckedChanged += RadioButton1_CheckedChanged;
             // 
@@ -89,16 +89,16 @@ namespace QcommentUrlCutter
             RadioButton2.AutoSize = true;
             RadioButton2.Location = new Point(381, 6);
             RadioButton2.Name = "RadioButton2";
-            RadioButton2.Size = new Size(124, 19);
+            RadioButton2.Size = new Size(121, 19);
             RadioButton2.TabIndex = 4;
-            RadioButton2.Text = "RadioButton2.mp3";
+            RadioButton2.Text = "RadioButton2.wav";
             RadioButton2.UseVisualStyleBackColor = true;
             RadioButton2.CheckedChanged += RadioButton2_CheckedChanged;
             // 
             // NoneButton
             // 
             NoneButton.AutoSize = true;
-            NoneButton.Location = new Point(540, 6);
+            NoneButton.Location = new Point(535, 6);
             NoneButton.Name = "NoneButton";
             NoneButton.Size = new Size(52, 19);
             NoneButton.TabIndex = 5;

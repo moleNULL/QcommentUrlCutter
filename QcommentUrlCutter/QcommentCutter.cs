@@ -1,15 +1,12 @@
 ﻿using System.Media;
+using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Models;
 
-namespace QcommentUrlCutter.Logic
+namespace QcommentUrlCutter
 {
     public class QcommentCutter
     {
-        private const int ClipboardCheckIntervalInMs = 500;
-        private const string QcommentText = "QcommentText";
-        private const string ClipboardText = "ClipboardText";
-
         private readonly TextBox _clipboardTextBox;
         private readonly ApplicationState _state;
         private readonly ApplicationSettings _appsettings;
@@ -19,7 +16,7 @@ namespace QcommentUrlCutter.Logic
         public QcommentCutter(
             ApplicationState state, TextBox clipboardTextBox, ILogger logger, Action enableNoneButton)
         {
-            _appsettings = Helpers.GetApplicationSettings();
+            _appsettings = SettingsHelper.GetApplicationSettings();
 
             _state = state;
             _clipboardTextBox = clipboardTextBox;
@@ -45,14 +42,14 @@ namespace QcommentUrlCutter.Logic
                         }
                         else
                         {
-                            PrintText($"{++_state.CountOutput}. Clipboard: {clipboardData}", ClipboardText);
+                            PrintText($"{++_state.CountOutput}. {clipboardData}", Constants.ClipboardText);
                         }
 
                         oldClipboardData = clipboardData;
                     }
                 }
 
-                await Task.Delay(ClipboardCheckIntervalInMs);
+                await Task.Delay(Constants.ClipboardCheckIntervalInMs);
             }
         }
 
@@ -64,7 +61,8 @@ namespace QcommentUrlCutter.Logic
             Clipboard.SetText(decodedUrl);
 
             PlaySound(_state.SoundFile);
-            PrintText($"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}", QcommentText);
+            PrintText(
+                $"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}", Constants.QcommentText);
         }
 
         private void PlaySound(string? fileName)
@@ -90,14 +88,14 @@ namespace QcommentUrlCutter.Logic
 
         private void PrintText(string text, string textType)
         {
-            if (textType == QcommentText)
+            if (textType == Constants.QcommentText)
             {
                 _clipboardTextBox.AppendText(Environment.NewLine);
                 _clipboardTextBox.AppendText(text);
                 _clipboardTextBox.AppendText(Environment.NewLine);
                 _clipboardTextBox.AppendText(Environment.NewLine);
             }
-            else if (textType == ClipboardText)
+            else if (textType == Constants.ClipboardText)
             {
                 _clipboardTextBox.AppendText(text);
                 _clipboardTextBox.AppendText(Environment.NewLine);
