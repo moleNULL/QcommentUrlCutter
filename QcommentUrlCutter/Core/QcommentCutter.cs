@@ -3,7 +3,7 @@ using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Models;
 
-namespace QcommentUrlCutter
+namespace QcommentUrlCutter.Core
 {
     public class QcommentCutter
     {

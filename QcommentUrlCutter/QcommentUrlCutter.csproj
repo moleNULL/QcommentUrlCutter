@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
 	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
 	<CodeAnalysisRuleSet>settings.ruleset</CodeAnalysisRuleSet>
-	<NoWarn>SA0001;SA1633;SA1200;IDE0063;CA1822</NoWarn>
+	<NoWarn>SA0001;SA1633;SA1200;IDE0063;CA1822;SYSLIB1045</NoWarn>
     <ApplicationIcon>Files\Icons\icon.ico</ApplicationIcon>
     <PlatformTarget>AnyCPU</PlatformTarget>
     <Authors>moleNULL</Authors>
@@ -17,8 +17,8 @@
     <Copyright>Copyright (C) 2023</Copyright>
     <Description>Application to cut unnecessary URL appended by Qcomment to the required URL and copy processed URL to the clipboard)</Description>
     <PackageIcon>icon.png</PackageIcon>
-    <AssemblyVersion>2.2</AssemblyVersion>
-    <FileVersion>2.2</FileVersion>
+    <AssemblyVersion>3.0</AssemblyVersion>
+    <FileVersion>3.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

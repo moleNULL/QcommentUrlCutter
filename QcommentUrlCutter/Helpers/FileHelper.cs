@@ -5,9 +5,22 @@ namespace QcommentUrlCutter.Helpers
 {
     public static class FileHelper
     {
+        public static string? GetTextFromFile(string filePath)
+        {
+            return !File.Exists(filePath) ? null : File.ReadAllText(filePath);
+        }
+
+        public static void ClearFile(string filePath)
+        {
+            if (File.Exists(filePath))
+            {
+                File.WriteAllText(filePath, string.Empty);
+            }
+        }
+
         public static void RecreateAppsettingsIfNotExists(ILogger logger)
         {
-            RecreateFileTextIfNotExists(Constants.AppsettingsJson, logger);
+            RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, logger);
         }
 
         public static void RecreateSoundsIfNotExist(ILogger logger)

@@ -8,24 +8,22 @@ namespace QcommentUrlCutter.Helpers
     {
         public static ApplicationSettings GetApplicationSettings()
         {
-            using (var fs = new FileStream(Constants.AppsettingsJson, FileMode.OpenOrCreate))
+            ApplicationSettings? settings;
+
+            using (var fs = new FileStream(Constants.AppsettingsJsonFile, FileMode.OpenOrCreate))
             {
-                var settings = JsonSerializer.Deserialize<ApplicationSettings>(fs);
-
-                if (settings is null)
-                {
-                    throw new JsonException(
-                        $"Failed to deserialize application settings from {Constants.AppsettingsJson}");
-                }
-
-                if (string.IsNullOrWhiteSpace(settings.UrlPrefix) ||
-                    !Regex.IsMatch(settings.UrlPrefix, @"^(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$"))
-                {
-                    throw new Exception("UrlPrefix must be URL");
-                }
-
-                return settings;
+                settings = JsonSerializer.Deserialize<ApplicationSettings>(fs);
             }
+
+            if (settings is null)
+            {
+                throw new JsonException(
+                    $"Failed to deserialize application settings from {Constants.AppsettingsJsonFile}");
+            }
+
+            ValidateApplicationSettings(settings);
+
+            return settings;
         }
 
         public static void SaveRadioButtonChoiceToFile(ApplicationSettings appsettings, string radioButtonName)
@@ -33,11 +31,33 @@ namespace QcommentUrlCutter.Helpers
             if (radioButtonName != appsettings.RadioButtonChoice)
             {
                 appsettings.RadioButtonChoice = radioButtonName;
+                SaveApplicationSettings(Constants.AppsettingsJsonFile, appsettings);
+            }
+        }
 
-                string json = JsonSerializer.Serialize(
+        public static void SaveApplicationSettings(string path, ApplicationSettings appsettings)
+        {
+            string json = JsonSerializer.Serialize(
                     appsettings, new JsonSerializerOptions { WriteIndented = true });
 
-                File.WriteAllText(Constants.AppsettingsJson, json);
+            File.WriteAllText(path, json);
+        }
+
+        private static void ValidateApplicationSettings(ApplicationSettings settings)
+        {
+            if (string.IsNullOrWhiteSpace(settings.UrlPrefix) ||
+                !Regex.IsMatch(settings.UrlPrefix, @"^(http|https)://([\w-]+\.)+[\w-]+(/[\w- ./?%&=]*)?$"))
+            {
+                throw new Exception("UrlPrefix must be URL");
+            }
+
+            string[] radioButtonNames = { "RadioButton1", "RadioButton2", "NoneButton" };
+            string radioButtonDefaultIfWrong = "NoneButton";
+
+            if (string.IsNullOrWhiteSpace(settings.RadioButtonChoice)
+                || !radioButtonNames.Contains(settings.RadioButtonChoice))
+            {
+                SaveRadioButtonChoiceToFile(settings, radioButtonDefaultIfWrong);
             }
         }
     }

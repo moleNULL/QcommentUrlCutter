@@ -15,7 +15,7 @@
         public const string QcommentText = "QcommentText";
         public const string ClipboardText = "ClipboardText";
 
-        // Helpers.cs
-        public const string AppsettingsJson = "appsettings.json";
+        public const string AppsettingsJsonFile = "appsettings.json";
+        public const string LogFile = "application.log";
     }
 }
