@@ -2,7 +2,7 @@
 using QcommentUrlCutter.Core;
 using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Models;
-using QcommentUrlCutter.Tabs.Helpers;
+using QcommentUrlCutter.Tabs.TabHelpers;
 
 namespace QcommentUrlCutter
 {
@@ -30,7 +30,7 @@ namespace QcommentUrlCutter
 
                 if (_appsettings.IsButtonClickedOnLaunch)
                 {
-                    ButtonStart_Click(this, EventArgs.Empty);
+                    ButtonStart_ClickAsync(this, EventArgs.Empty);
                 }
                 else
                 {
@@ -44,7 +44,7 @@ namespace QcommentUrlCutter
             }
         }
 
-        private async void ButtonStart_Click(object sender, EventArgs e)
+        private async void ButtonStart_ClickAsync(object sender, EventArgs e)
         {
             _state.MustRun = true;
             ButtonStart.Enabled = false;
@@ -54,23 +54,18 @@ namespace QcommentUrlCutter
             {
                 var qCutter = new QcommentCutter(
                     _state, clipboardTextBox, _logger, _applicationTabHelper.CheckNoneButton);
-                await qCutter.Run();
+                await qCutter.RunAsync();
             }
             catch (Exception ex)
             {
                 ExceptionHelper.HandleException(
-                    _applicationTitle, nameof(ButtonStart_Click), ex, _logger, exitApplication: true);
+                    _applicationTitle, nameof(ButtonStart_ClickAsync), ex, _logger, exitApplication: true);
             }
         }
 
         private void ButtonStop_Click(object sender, EventArgs e)
         {
             _state.MustRun = false;
-
-            if (_state.CountOutput > 0)
-            {
-                _state.CountOutput--; // when switching between Start/Stop the CountOutput won't be incremented
-            }
 
             ButtonStart.Enabled = true;
             ButtonStop.Enabled = false;

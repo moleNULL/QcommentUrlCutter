@@ -7,13 +7,6 @@
         public bool MustRun { get; set; }
         public int CountOutput { get; set; }
         public string? SoundFile { get; set; }
-        public static string CurrentDirectory
-        {
-            get
-            {
-                _currentDirectory ??= Directory.GetCurrentDirectory();
-                return _currentDirectory;
-            }
-        }
+        public static string CurrentDirectory => _currentDirectory ??= Directory.GetCurrentDirectory();
     }
 }

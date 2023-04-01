@@ -24,5 +24,10 @@ namespace QcommentUrlCutter.Helpers
                 Environment.Exit(0);
             }
         }
+
+        public static void ThrowException()
+        {
+            throw new Exception($"Debug test exception from {nameof(ExceptionHelper)}.cs");
+        }
     }
 }

@@ -24,7 +24,7 @@ namespace QcommentUrlCutter.Core
             _enableNoneButton = enableNoneButton;
         }
 
-        public async Task Run()
+        public async Task RunAsync()
         {
             string oldClipboardData = string.Empty;
 
@@ -42,7 +42,7 @@ namespace QcommentUrlCutter.Core
                         }
                         else
                         {
-                            PrintText($"{++_state.CountOutput}. {clipboardData}", Constants.ClipboardText);
+                            HandleClipboardText(ref clipboardData);
                         }
 
                         oldClipboardData = clipboardData;
@@ -63,6 +63,23 @@ namespace QcommentUrlCutter.Core
             PlaySound(_state.SoundFile);
             PrintText(
                 $"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}", Constants.QcommentText);
+        }
+
+        private void HandleClipboardText(ref string clipboardData)
+        {
+            string possibleLatestClipboardRecord =
+                                $"{_state.CountOutput}. {clipboardData}{Environment.NewLine}";
+
+            if (!_clipboardTextBox.Text.Contains(possibleLatestClipboardRecord))
+            {
+                if (Uri.IsWellFormedUriString(clipboardData, UriKind.Absolute))
+                {
+                    clipboardData = Uri.UnescapeDataString(clipboardData);
+                    Clipboard.SetText(clipboardData);
+                }
+
+                PrintText($"{++_state.CountOutput}. {clipboardData}", Constants.ClipboardText);
+            }
         }
 
         private void PlaySound(string? fileName)

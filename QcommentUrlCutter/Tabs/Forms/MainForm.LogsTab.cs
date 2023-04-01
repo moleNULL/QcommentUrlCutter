@@ -57,12 +57,12 @@ namespace QcommentUrlCutter
             string filePath = ApplicationState.CurrentDirectory + "\\" + Constants.LogFile;
             string argument = $"/select, {filePath}";
 
-            Process.Start("explorer.exe", argument);
+            Process.Start(Constants.ApplicationToOpenFolderDefault, argument);
         }
 
         private void LogsFileButton_Click(object sender, EventArgs e)
         {
-            Process.Start("notepad.exe", Constants.LogFile);
+            Process.Start(_appsettings.ApplicationToOpenFiles, Constants.LogFile);
         }
     }
 }

@@ -1,7 +1,7 @@
 using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Models;
-using QcommentUrlCutter.Tabs.Helpers;
+using QcommentUrlCutter.Tabs.TabHelpers;
 
 namespace QcommentUrlCutter
 {
@@ -39,9 +39,17 @@ namespace QcommentUrlCutter
 
 /*
     TODO:
-1.log if i changed settings via SubmitButton
-2.print if successfully submited
-3.try-catch everywhere
-4.add timer for SubmitButtonStatusLabel
-5.combobox bugs with Submit button
+1.try-catch everywhere
+2.exceptions if removed appsettings and logs while app is already running
+3. QcommentUrl -> UrlCutter
+4. Application helper Exception sound method
+--5. \r\n in WinForms
+--6. WinForms architecture + best practice
+--7. IClonable
+8. Exception thrown if invalid json 0 bytes
+9. отделить комментариями утилитарные методы везде
+10. exception https://qcomment.ru/site/go?url=
+11. WinAPI clipboard event
+12. Make sound for escaped urls
+13. Log if: unescaped string, qcomment cut
  */

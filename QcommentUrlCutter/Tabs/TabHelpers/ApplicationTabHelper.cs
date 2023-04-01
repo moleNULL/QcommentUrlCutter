@@ -1,6 +1,6 @@
 ﻿using QcommentUrlCutter.Models;
 
-namespace QcommentUrlCutter.Tabs.Helpers
+namespace QcommentUrlCutter.Tabs.TabHelpers
 {
     public class ApplicationTabHelper
     {

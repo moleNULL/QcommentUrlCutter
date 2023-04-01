@@ -40,6 +40,10 @@
             ApplicationTab = new TabPage();
             ApplicationFolderButton = new Button();
             SettingsTab = new TabPage();
+            ApplicationToOpenFilesButton = new Button();
+            ApplicationToOpenFilesTextBox = new TextBox();
+            ApplicationToOpenFilesLabel = new Label();
+            SubmitButtonStatusLabel = new Label();
             SettingsFolderButton = new Button();
             SettingsFileButton = new Button();
             SubmitButton = new Button();
@@ -60,7 +64,6 @@
             LogsFileButton = new Button();
             ClearLogsButton = new Button();
             LogsTextBox = new TextBox();
-            SubmitButtonStatusLabel = new Label();
             TabControl.SuspendLayout();
             ApplicationTab.SuspendLayout();
             SettingsTab.SuspendLayout();
@@ -69,18 +72,18 @@
             // 
             // ButtonStart
             // 
-            ButtonStart.Location = new Point(6, 97);
+            ButtonStart.Location = new Point(3, 96);
             ButtonStart.Name = "ButtonStart";
             ButtonStart.Size = new Size(75, 23);
             ButtonStart.TabIndex = 0;
             ButtonStart.Text = "Start";
             ButtonStart.UseVisualStyleBackColor = true;
-            ButtonStart.Click += ButtonStart_Click;
+            ButtonStart.Click += ButtonStart_ClickAsync;
             // 
             // ButtonStop
             // 
             ButtonStop.Enabled = false;
-            ButtonStop.Location = new Point(6, 151);
+            ButtonStop.Location = new Point(3, 152);
             ButtonStop.Name = "ButtonStop";
             ButtonStop.Size = new Size(75, 23);
             ButtonStop.TabIndex = 1;
@@ -90,11 +93,11 @@
             // 
             // clipboardTextBox
             // 
-            clipboardTextBox.Location = new Point(86, 31);
+            clipboardTextBox.Location = new Point(84, 31);
             clipboardTextBox.Multiline = true;
             clipboardTextBox.Name = "clipboardTextBox";
             clipboardTextBox.ScrollBars = ScrollBars.Vertical;
-            clipboardTextBox.Size = new Size(544, 254);
+            clipboardTextBox.Size = new Size(546, 254);
             clipboardTextBox.TabIndex = 2;
             // 
             // RadioButton1
@@ -175,7 +178,7 @@
             // 
             // ApplicationFolderButton
             // 
-            ApplicationFolderButton.Location = new Point(5, 262);
+            ApplicationFolderButton.Location = new Point(3, 269);
             ApplicationFolderButton.Name = "ApplicationFolderButton";
             ApplicationFolderButton.Size = new Size(75, 23);
             ApplicationFolderButton.TabIndex = 7;
@@ -185,6 +188,9 @@
             // 
             // SettingsTab
             // 
+            SettingsTab.Controls.Add(ApplicationToOpenFilesButton);
+            SettingsTab.Controls.Add(ApplicationToOpenFilesTextBox);
+            SettingsTab.Controls.Add(ApplicationToOpenFilesLabel);
             SettingsTab.Controls.Add(SubmitButtonStatusLabel);
             SettingsTab.Controls.Add(SettingsFolderButton);
             SettingsTab.Controls.Add(SettingsFileButton);
@@ -210,9 +216,47 @@
             SettingsTab.UseVisualStyleBackColor = true;
             SettingsTab.Enter += SettingsTab_Enter;
             // 
+            // ApplicationToOpenFilesButton
+            // 
+            ApplicationToOpenFilesButton.Location = new Point(482, 216);
+            ApplicationToOpenFilesButton.Name = "ApplicationToOpenFilesButton";
+            ApplicationToOpenFilesButton.Size = new Size(31, 23);
+            ApplicationToOpenFilesButton.TabIndex = 23;
+            ApplicationToOpenFilesButton.Text = "...";
+            ApplicationToOpenFilesButton.UseVisualStyleBackColor = true;
+            ApplicationToOpenFilesButton.Click += ApplicationToOpenFilesButton_Click;
+            // 
+            // ApplicationToOpenFilesTextBox
+            // 
+            ApplicationToOpenFilesTextBox.Location = new Point(178, 216);
+            ApplicationToOpenFilesTextBox.Name = "ApplicationToOpenFilesTextBox";
+            ApplicationToOpenFilesTextBox.Size = new Size(298, 23);
+            ApplicationToOpenFilesTextBox.TabIndex = 21;
+            ApplicationToOpenFilesTextBox.TextChanged += ApplicationToOpenFilesTexTBox_TextChanged;
+            // 
+            // ApplicationToOpenFilesLabel
+            // 
+            ApplicationToOpenFilesLabel.AutoSize = true;
+            ApplicationToOpenFilesLabel.Location = new Point(18, 219);
+            ApplicationToOpenFilesLabel.Name = "ApplicationToOpenFilesLabel";
+            ApplicationToOpenFilesLabel.Size = new Size(135, 15);
+            ApplicationToOpenFilesLabel.TabIndex = 20;
+            ApplicationToOpenFilesLabel.Text = "ApplicationToOpenFiles:";
+            // 
+            // SubmitButtonStatusLabel
+            // 
+            SubmitButtonStatusLabel.AutoSize = true;
+            SubmitButtonStatusLabel.Font = new Font("Algerian", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
+            SubmitButtonStatusLabel.Location = new Point(281, 245);
+            SubmitButtonStatusLabel.Name = "SubmitButtonStatusLabel";
+            SubmitButtonStatusLabel.Size = new Size(80, 21);
+            SubmitButtonStatusLabel.TabIndex = 19;
+            SubmitButtonStatusLabel.Text = "Status";
+            SubmitButtonStatusLabel.Visible = false;
+            // 
             // SettingsFolderButton
             // 
-            SettingsFolderButton.Location = new Point(3, 263);
+            SettingsFolderButton.Location = new Point(3, 269);
             SettingsFolderButton.Name = "SettingsFolderButton";
             SettingsFolderButton.Size = new Size(75, 23);
             SettingsFolderButton.TabIndex = 18;
@@ -222,7 +266,7 @@
             // 
             // SettingsFileButton
             // 
-            SettingsFileButton.Location = new Point(552, 262);
+            SettingsFileButton.Location = new Point(555, 269);
             SettingsFileButton.Name = "SettingsFileButton";
             SettingsFileButton.Size = new Size(75, 23);
             SettingsFileButton.TabIndex = 17;
@@ -232,7 +276,7 @@
             // 
             // SubmitButton
             // 
-            SubmitButton.Location = new Point(292, 262);
+            SubmitButton.Location = new Point(281, 269);
             SubmitButton.Name = "SubmitButton";
             SubmitButton.Size = new Size(75, 23);
             SubmitButton.TabIndex = 16;
@@ -242,7 +286,7 @@
             // 
             // SoundPathSecondButton
             // 
-            SoundPathSecondButton.Location = new Point(482, 182);
+            SoundPathSecondButton.Location = new Point(482, 174);
             SoundPathSecondButton.Name = "SoundPathSecondButton";
             SoundPathSecondButton.Size = new Size(31, 23);
             SoundPathSecondButton.TabIndex = 15;
@@ -252,15 +296,16 @@
             // 
             // SoundPathSecondTextBox
             // 
-            SoundPathSecondTextBox.Location = new Point(178, 179);
+            SoundPathSecondTextBox.Location = new Point(178, 174);
             SoundPathSecondTextBox.Name = "SoundPathSecondTextBox";
             SoundPathSecondTextBox.Size = new Size(298, 23);
             SoundPathSecondTextBox.TabIndex = 14;
+            SoundPathSecondTextBox.TextChanged += SoundPathSecondTextBox_TextChanged;
             // 
             // SoundPathSecondLabel
             // 
             SoundPathSecondLabel.AutoSize = true;
-            SoundPathSecondLabel.Location = new Point(22, 182);
+            SoundPathSecondLabel.Location = new Point(18, 182);
             SoundPathSecondLabel.Name = "SoundPathSecondLabel";
             SoundPathSecondLabel.Size = new Size(107, 15);
             SoundPathSecondLabel.TabIndex = 13;
@@ -268,7 +313,7 @@
             // 
             // SoundPathFirstTextBox
             // 
-            SoundPathFirstTextBox.Location = new Point(178, 143);
+            SoundPathFirstTextBox.Location = new Point(178, 134);
             SoundPathFirstTextBox.Name = "SoundPathFirstTextBox";
             SoundPathFirstTextBox.Size = new Size(298, 23);
             SoundPathFirstTextBox.TabIndex = 12;
@@ -276,7 +321,7 @@
             // 
             // SoundPathFirstButton
             // 
-            SoundPathFirstButton.Location = new Point(482, 142);
+            SoundPathFirstButton.Location = new Point(482, 137);
             SoundPathFirstButton.Name = "SoundPathFirstButton";
             SoundPathFirstButton.Size = new Size(31, 23);
             SoundPathFirstButton.TabIndex = 11;
@@ -287,7 +332,7 @@
             // SoundPathFirstLabel
             // 
             SoundPathFirstLabel.AutoSize = true;
-            SoundPathFirstLabel.Location = new Point(22, 142);
+            SoundPathFirstLabel.Location = new Point(18, 137);
             SoundPathFirstLabel.Name = "SoundPathFirstLabel";
             SoundPathFirstLabel.Size = new Size(90, 15);
             SoundPathFirstLabel.TabIndex = 10;
@@ -298,7 +343,7 @@
             RadioButtonChoiceComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             RadioButtonChoiceComboBox.FormattingEnabled = true;
             RadioButtonChoiceComboBox.Items.AddRange(new object[] { "RadioButton1", "RadioButton2", "NoneButton" });
-            RadioButtonChoiceComboBox.Location = new Point(178, 64);
+            RadioButtonChoiceComboBox.Location = new Point(178, 54);
             RadioButtonChoiceComboBox.Name = "RadioButtonChoiceComboBox";
             RadioButtonChoiceComboBox.Size = new Size(104, 23);
             RadioButtonChoiceComboBox.TabIndex = 9;
@@ -309,7 +354,7 @@
             IsButtonClickedOnLaunchComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             IsButtonClickedOnLaunchComboBox.FormattingEnabled = true;
             IsButtonClickedOnLaunchComboBox.Items.AddRange(new object[] { "true", "false" });
-            IsButtonClickedOnLaunchComboBox.Location = new Point(178, 100);
+            IsButtonClickedOnLaunchComboBox.Location = new Point(178, 95);
             IsButtonClickedOnLaunchComboBox.Name = "IsButtonClickedOnLaunchComboBox";
             IsButtonClickedOnLaunchComboBox.Size = new Size(62, 23);
             IsButtonClickedOnLaunchComboBox.TabIndex = 8;
@@ -318,7 +363,7 @@
             // IsButtonClickedOnLaunchLabel
             // 
             IsButtonClickedOnLaunchLabel.AutoSize = true;
-            IsButtonClickedOnLaunchLabel.Location = new Point(21, 108);
+            IsButtonClickedOnLaunchLabel.Location = new Point(18, 98);
             IsButtonClickedOnLaunchLabel.Name = "IsButtonClickedOnLaunchLabel";
             IsButtonClickedOnLaunchLabel.Size = new Size(148, 15);
             IsButtonClickedOnLaunchLabel.TabIndex = 6;
@@ -327,7 +372,7 @@
             // RadioButtonChoiceLabel
             // 
             RadioButtonChoiceLabel.AutoSize = true;
-            RadioButtonChoiceLabel.Location = new Point(18, 64);
+            RadioButtonChoiceLabel.Location = new Point(16, 57);
             RadioButtonChoiceLabel.Name = "RadioButtonChoiceLabel";
             RadioButtonChoiceLabel.Size = new Size(113, 15);
             RadioButtonChoiceLabel.TabIndex = 2;
@@ -335,7 +380,7 @@
             // 
             // UrlPrefixTextBox
             // 
-            UrlPrefixTextBox.Location = new Point(178, 25);
+            UrlPrefixTextBox.Location = new Point(178, 12);
             UrlPrefixTextBox.Name = "UrlPrefixTextBox";
             UrlPrefixTextBox.Size = new Size(298, 23);
             UrlPrefixTextBox.TabIndex = 1;
@@ -344,7 +389,7 @@
             // UrlPrefixLabel
             // 
             UrlPrefixLabel.AutoSize = true;
-            UrlPrefixLabel.Location = new Point(17, 33);
+            UrlPrefixLabel.Location = new Point(18, 20);
             UrlPrefixLabel.Name = "UrlPrefixLabel";
             UrlPrefixLabel.Size = new Size(55, 15);
             UrlPrefixLabel.TabIndex = 0;
@@ -405,17 +450,6 @@
             LogsTextBox.Size = new Size(641, 265);
             LogsTextBox.TabIndex = 0;
             // 
-            // SubmitButtonStatusLabel
-            // 
-            SubmitButtonStatusLabel.AutoSize = true;
-            SubmitButtonStatusLabel.Font = new Font("Algerian", 14.25F, FontStyle.Regular, GraphicsUnit.Point);
-            SubmitButtonStatusLabel.Location = new Point(292, 222);
-            SubmitButtonStatusLabel.Name = "SubmitButtonStatusLabel";
-            SubmitButtonStatusLabel.Size = new Size(80, 21);
-            SubmitButtonStatusLabel.TabIndex = 19;
-            SubmitButtonStatusLabel.Text = "Status";
-            SubmitButtonStatusLabel.Visible = false;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -472,5 +506,8 @@
         private Button SettingsFileButton;
         private Button ApplicationFolderButton;
         private Label SubmitButtonStatusLabel;
+        private Button ApplicationToOpenFilesButton;
+        private TextBox ApplicationToOpenFilesTextBox;
+        private Label ApplicationToOpenFilesLabel;
     }
 }

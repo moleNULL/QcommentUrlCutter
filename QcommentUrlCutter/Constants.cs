@@ -17,5 +17,8 @@
 
         public const string AppsettingsJsonFile = "appsettings.json";
         public const string LogFile = "application.log";
+
+        public const string ApplicationToOpenFileDefault = "C:\\Windows\\System32\\notepad.exe";
+        public const string ApplicationToOpenFolderDefault = "C:\\Windows\\explorer.exe";
     }
 }

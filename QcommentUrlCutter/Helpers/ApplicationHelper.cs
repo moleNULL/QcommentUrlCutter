@@ -34,10 +34,5 @@ namespace QcommentUrlCutter.Helpers
 
             return fileVersionInfo is not null ? $" [version {fileVersionInfo}]" : null;
         }
-
-        public static void DebugException()
-        {
-            throw new Exception("Debug test exception from ApplicationHelper.cs");
-        }
     }
 }
