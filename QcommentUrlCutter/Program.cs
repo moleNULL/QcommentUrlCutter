@@ -1,10 +1,12 @@
-﻿namespace QcommentUrlCutter
+namespace QcommentUrlCutter
 {
-    internal class Program
+    public static class Program
     {
-        static void Main(string[] args)
+        [STAThread]
+        public static void Main()
         {
-            Console.WriteLine(" ");
+            ApplicationConfiguration.Initialize();
+            Application.Run(new MainForm());
         }
     }
 }

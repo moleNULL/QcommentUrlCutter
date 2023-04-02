@@ -1,10 +1,43 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
-    <TargetFramework>net7.0</TargetFramework>
-    <ImplicitUsings>enable</ImplicitUsings>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+	<TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+	<CodeAnalysisRuleSet>settings.ruleset</CodeAnalysisRuleSet>
+	<NoWarn>SA0001;SA1633;SA1200;IDE0063;CA1822;SYSLIB1045</NoWarn>
+    <ApplicationIcon>Files\Icons\icon.ico</ApplicationIcon>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <Authors>moleNULL</Authors>
+    <Company />
+    <Product>QcommentUrlCutter</Product>
+    <Copyright>Copyright (C) 2023</Copyright>
+    <Description>Application to cut unnecessary URL appended by Qcomment to the required URL and copy processed URL to the clipboard)</Description>
+    <PackageIcon>icon.png</PackageIcon>
+    <AssemblyVersion>3.3</AssemblyVersion>
+    <FileVersion>3.3</FileVersion>
   </PropertyGroup>
 
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Files\Sounds\dog_barking.wav" />
+    <EmbeddedResource Include="Files\Sounds\female_gasp.wav" />
+    <EmbeddedResource Include="Files\Sounds\finished_sound.wav" />
+    <EmbeddedResource Include="Files\Sounds\good_sound.wav" />
+    <EmbeddedResource Include="Files\Sounds\success_sound.wav" />
+    <Content Include="Files\Icons\icon.ico" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="StyleCop.Analyzers" Version="1.1.118">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+  </ItemGroup>
+	
 </Project>
