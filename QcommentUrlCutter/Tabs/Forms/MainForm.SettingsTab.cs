@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using QcommentUrlCutter.Helpers;
+﻿using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Models;
 using QcommentUrlCutter.Tabs.TabHelpers;
 
@@ -12,7 +11,7 @@ namespace QcommentUrlCutter
         private void SettingsTab_Enter(object? sender, EventArgs e)
         {
             _settingsTabHelper = new SettingsTabHelper(SubmitButton, SubmitButtonStatusLabel);
-            _appsettings = SettingsHelper.GetApplicationSettings();
+            _appsettings = SettingsHelper.GetApplicationSettings(_logger);
 
             UrlPrefixTextBox.Text = _appsettings.UrlPrefix;
             RadioButtonChoiceComboBox.Text = _appsettings.RadioButtonChoice;
@@ -39,11 +38,15 @@ namespace QcommentUrlCutter
                 SoundPathSecond = SoundPathSecondTextBox.Text
             };
 
+            FileHelper.RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, _logger);
+
             try
             {
                 SettingsHelper.SaveApplicationSettings(Constants.AppsettingsJsonFile, userSettings);
                 _logger.Log($"Edited {Constants.AppsettingsJsonFile} inside Settings tab");
                 SettingsTab_Enter(this, EventArgs.Empty);
+
+                SoundHelper.PlaySuccessSound();
 
                 _settingsTabHelper.ShowSubmitButtonStatus(isButtonEnabled: false, "Success", Color.Green);
             }
@@ -52,6 +55,8 @@ namespace QcommentUrlCutter
                 _logger.Log($"Exception while saving settings to {Constants.AppsettingsJsonFile} inside" +
                     $" Settings tab: {ex.Message}");
                 SettingsTab_Enter(this, EventArgs.Empty);
+
+                SoundHelper.PlayExceptionSound();
 
                 _settingsTabHelper.ShowSubmitButtonStatus(isButtonEnabled: true, "Failure", Color.Red);
             }
@@ -133,12 +138,12 @@ namespace QcommentUrlCutter
             string filePath = ApplicationState.CurrentDirectory + "\\" + Constants.AppsettingsJsonFile;
             string argument = $"/select, {filePath}";
 
-            Process.Start(Constants.ApplicationToOpenFolderDefault, argument);
+            RunFileHelper.RunFile(Constants.ApplicationToOpenFolderDefault, argument, _logger);
         }
 
         private void SettingsFileButton_Click(object sender, EventArgs e)
         {
-            Process.Start(_appsettings.ApplicationToOpenFiles, Constants.AppsettingsJsonFile);
+            RunFileHelper.RunFile(_appsettings.ApplicationToOpenFiles, Constants.AppsettingsJsonFile, _logger);
         }
     }
 }

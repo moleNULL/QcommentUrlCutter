@@ -18,28 +18,7 @@ namespace QcommentUrlCutter.Helpers
             }
         }
 
-        public static void RecreateAppsettingsIfNotExists(ILogger logger)
-        {
-            RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, logger);
-        }
-
-        public static void RecreateSoundsIfNotExist(ILogger logger)
-        {
-            string directoryName = "Sounds/";
-
-            string[] soundFiles =
-            {
-                "dog_barking.wav", "female_gasp.wav", "finished_sound.wav",
-                "good_sound.wav", "success_sound.wav"
-            };
-
-            foreach (string soundFile in soundFiles)
-            {
-                RecreateFileBinaryIfNotExists(directoryName + soundFile, logger);
-            }
-        }
-
-        private static void RecreateFileTextIfNotExists(string file, ILogger logger)
+        public static void RecreateFileTextIfNotExists(string file, ILogger logger)
         {
             CreateDirectoryIfNotExists(file, logger);
 
@@ -58,6 +37,26 @@ namespace QcommentUrlCutter.Helpers
                 logger.Log($"Created file {file}");
             }
         }
+
+        public static void RecreateSoundsIfNotExist(ILogger logger)
+        {
+            string directoryName = "Sounds/";
+
+            string[] soundFiles =
+            {
+                "dog_barking.wav", "female_gasp.wav", "finished_sound.wav",
+                "good_sound.wav", "success_sound.wav"
+            };
+
+            foreach (string soundFile in soundFiles)
+            {
+                RecreateFileBinaryIfNotExists(directoryName + soundFile, logger);
+            }
+        }
+
+        /*
+            -------------------------------------Utility methods-------------------------------------
+        */
 
         private static void RecreateFileBinaryIfNotExists(string file, ILogger logger)
         {

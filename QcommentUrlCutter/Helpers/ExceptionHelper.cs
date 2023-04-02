@@ -1,4 +1,5 @@
-﻿using QcommentUrlCutter.Logger;
+﻿using System.Text.Json;
+using QcommentUrlCutter.Logger;
 
 namespace QcommentUrlCutter.Helpers
 {
@@ -11,8 +12,20 @@ namespace QcommentUrlCutter.Helpers
             ILogger logger,
             bool exitApplication)
         {
+            string error;
+            if (ex is JsonException)
+            {
+                error = $"Error while deserializing {Constants.AppsettingsJsonFile}: \"{ex.Message}\"" +
+                    $"{Environment.NewLine}{Environment.NewLine}" +
+                    $"Delete {Constants.AppsettingsJsonFile} and restart the application";
+            }
+            else
+            {
+                error = ex.Message;
+            }
+
             MessageBox.Show(
-                ex.Message,
+                error,
                 $"{applicationTitle} | {methodName} Exception",
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);

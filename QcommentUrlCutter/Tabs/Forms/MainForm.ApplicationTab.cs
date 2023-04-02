@@ -14,7 +14,10 @@ namespace QcommentUrlCutter
         {
             try
             {
-                _appsettings = SettingsHelper.GetApplicationSettings();
+                FileHelper.RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, _logger);
+                FileHelper.RecreateFileTextIfNotExists(Constants.LogFile, _logger);
+
+                _appsettings = SettingsHelper.GetApplicationSettings(_logger);
 
                 _applicationTabHelper = new ApplicationTabHelper()
                 {
@@ -77,7 +80,7 @@ namespace QcommentUrlCutter
                 + "\\" + AppDomain.CurrentDomain.FriendlyName + ".exe";
             string argument = $"/select, {filePath}";
 
-            Process.Start("explorer.exe", argument);
+            Process.Start(Constants.ApplicationToOpenFolderDefault, argument);
         }
 
         private void RadioButton1_CheckedChanged(object sender, EventArgs e)

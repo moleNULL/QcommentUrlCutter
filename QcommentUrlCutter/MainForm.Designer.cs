@@ -237,7 +237,7 @@
             // ApplicationToOpenFilesLabel
             // 
             ApplicationToOpenFilesLabel.AutoSize = true;
-            ApplicationToOpenFilesLabel.Location = new Point(18, 219);
+            ApplicationToOpenFilesLabel.Location = new Point(18, 221);
             ApplicationToOpenFilesLabel.Name = "ApplicationToOpenFilesLabel";
             ApplicationToOpenFilesLabel.Size = new Size(135, 15);
             ApplicationToOpenFilesLabel.TabIndex = 20;
@@ -305,7 +305,7 @@
             // SoundPathSecondLabel
             // 
             SoundPathSecondLabel.AutoSize = true;
-            SoundPathSecondLabel.Location = new Point(18, 182);
+            SoundPathSecondLabel.Location = new Point(18, 179);
             SoundPathSecondLabel.Name = "SoundPathSecondLabel";
             SoundPathSecondLabel.Size = new Size(107, 15);
             SoundPathSecondLabel.TabIndex = 13;
@@ -321,7 +321,7 @@
             // 
             // SoundPathFirstButton
             // 
-            SoundPathFirstButton.Location = new Point(482, 137);
+            SoundPathFirstButton.Location = new Point(482, 134);
             SoundPathFirstButton.Name = "SoundPathFirstButton";
             SoundPathFirstButton.Size = new Size(31, 23);
             SoundPathFirstButton.TabIndex = 11;
@@ -332,7 +332,7 @@
             // SoundPathFirstLabel
             // 
             SoundPathFirstLabel.AutoSize = true;
-            SoundPathFirstLabel.Location = new Point(18, 137);
+            SoundPathFirstLabel.Location = new Point(18, 140);
             SoundPathFirstLabel.Name = "SoundPathFirstLabel";
             SoundPathFirstLabel.Size = new Size(90, 15);
             SoundPathFirstLabel.TabIndex = 10;
@@ -363,7 +363,7 @@
             // IsButtonClickedOnLaunchLabel
             // 
             IsButtonClickedOnLaunchLabel.AutoSize = true;
-            IsButtonClickedOnLaunchLabel.Location = new Point(18, 98);
+            IsButtonClickedOnLaunchLabel.Location = new Point(18, 99);
             IsButtonClickedOnLaunchLabel.Name = "IsButtonClickedOnLaunchLabel";
             IsButtonClickedOnLaunchLabel.Size = new Size(148, 15);
             IsButtonClickedOnLaunchLabel.TabIndex = 6;
@@ -372,7 +372,7 @@
             // RadioButtonChoiceLabel
             // 
             RadioButtonChoiceLabel.AutoSize = true;
-            RadioButtonChoiceLabel.Location = new Point(16, 57);
+            RadioButtonChoiceLabel.Location = new Point(16, 59);
             RadioButtonChoiceLabel.Name = "RadioButtonChoiceLabel";
             RadioButtonChoiceLabel.Size = new Size(113, 15);
             RadioButtonChoiceLabel.TabIndex = 2;
@@ -389,7 +389,7 @@
             // UrlPrefixLabel
             // 
             UrlPrefixLabel.AutoSize = true;
-            UrlPrefixLabel.Location = new Point(18, 20);
+            UrlPrefixLabel.Location = new Point(18, 18);
             UrlPrefixLabel.Name = "UrlPrefixLabel";
             UrlPrefixLabel.Size = new Size(55, 15);
             UrlPrefixLabel.TabIndex = 0;

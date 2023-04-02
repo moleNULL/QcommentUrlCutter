@@ -1,5 +1,4 @@
-﻿using System.Media;
-using QcommentUrlCutter.Helpers;
+﻿using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Models;
 
@@ -16,11 +15,11 @@ namespace QcommentUrlCutter.Core
         public QcommentCutter(
             ApplicationState state, TextBox clipboardTextBox, ILogger logger, Action enableNoneButton)
         {
-            _appsettings = SettingsHelper.GetApplicationSettings();
+            _logger = logger;
+            _appsettings = SettingsHelper.GetApplicationSettings(_logger);
 
             _state = state;
             _clipboardTextBox = clipboardTextBox;
-            _logger = logger;
             _enableNoneButton = enableNoneButton;
         }
 
@@ -36,9 +35,10 @@ namespace QcommentUrlCutter.Core
 
                     if (!string.Equals(clipboardData, oldClipboardData))
                     {
-                        if (clipboardData.StartsWith(_appsettings.UrlPrefix))
+                        if (clipboardData.StartsWith(_appsettings.UrlPrefix)
+                            && clipboardData != _appsettings.UrlPrefix)
                         {
-                            PerformUrlCut(clipboardData);
+                            PerformUrlCut(ref clipboardData);
                         }
                         else
                         {
@@ -53,16 +53,22 @@ namespace QcommentUrlCutter.Core
             }
         }
 
-        private void PerformUrlCut(string clipboardData)
+        /*
+            ----------------------------------Main utility methods-----------------------------------
+        */
+
+        private void PerformUrlCut(ref string clipboardData)
         {
-            string encodedUrl = clipboardData[_appsettings.UrlPrefix.Length..];
-            string decodedUrl = Uri.UnescapeDataString(encodedUrl);
+            clipboardData = Uri.UnescapeDataString(clipboardData);
 
-            Clipboard.SetText(decodedUrl);
+            string formattedUrl = clipboardData[_appsettings.UrlPrefix.Length..];
 
+            Clipboard.SetText(formattedUrl);
             PlaySound(_state.SoundFile);
-            PrintText(
-                $"{++_state.CountOutput}. Qcomment: {encodedUrl} -> {decodedUrl}", Constants.QcommentText);
+
+            string info = $"QcommentUrl: {clipboardData} -> {formattedUrl}";
+            PrintText($"{++_state.CountOutput}. {info}", Constants.QcommentText);
+            _logger.Log(info);
         }
 
         private void HandleClipboardText(ref string clipboardData)
@@ -72,31 +78,33 @@ namespace QcommentUrlCutter.Core
 
             if (!_clipboardTextBox.Text.Contains(possibleLatestClipboardRecord))
             {
-                if (Uri.IsWellFormedUriString(clipboardData, UriKind.Absolute))
+                if (IsUriEscaped(clipboardData))
                 {
-                    clipboardData = Uri.UnescapeDataString(clipboardData);
-                    Clipboard.SetText(clipboardData);
+                    HandleEscapedUri(ref clipboardData);
                 }
 
                 PrintText($"{++_state.CountOutput}. {clipboardData}", Constants.ClipboardText);
             }
         }
 
+        /*
+            -------------------------------------Utility methods-------------------------------------
+        */
+
         private void PlaySound(string? fileName)
         {
-            if (fileName is null)
+            if (string.IsNullOrWhiteSpace(fileName))
             {
                 return;
             }
 
             try
             {
-                var player = new SoundPlayer(fileName);
-                player.Play();
+                SoundHelper.PlayCustomSound(fileName);
             }
             catch (Exception ex)
             {
-                SystemSounds.Hand.Play();
+                SoundHelper.PlayExceptionSound();
                 _enableNoneButton();
 
                 _logger.Log($"[SoundPlayer exception]: {ex.Message} - (File: {fileName})");
@@ -117,6 +125,23 @@ namespace QcommentUrlCutter.Core
                 _clipboardTextBox.AppendText(text);
                 _clipboardTextBox.AppendText(Environment.NewLine);
             }
+        }
+
+        private bool IsUriEscaped(string url)
+        {
+            string decodedUrl = Uri.UnescapeDataString(url);
+
+            return !(url == decodedUrl);
+        }
+
+        private void HandleEscapedUri(ref string clipboardData)
+        {
+            string escapedUri = clipboardData;
+            clipboardData = Uri.UnescapeDataString(escapedUri);
+            Clipboard.SetText(clipboardData);
+
+            SoundHelper.PlaySuccessSound();
+            _logger.Log($"Escaped Uri: {escapedUri} -> {clipboardData}");
         }
     }
 }

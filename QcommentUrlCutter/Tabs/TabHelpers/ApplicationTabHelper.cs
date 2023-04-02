@@ -58,6 +58,10 @@ namespace QcommentUrlCutter.Tabs.TabHelpers
             ApplicationState.SoundFile = null;
         }
 
+        /*
+            -------------------------------------Utility methods-------------------------------------
+        */
+
         private string GetSoundName(string? soundPath)
         {
             string? soundName = Path.GetFileName(soundPath);

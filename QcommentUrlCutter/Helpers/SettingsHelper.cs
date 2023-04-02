@@ -1,16 +1,21 @@
 ﻿using System.Text.Json;
 using System.Text.RegularExpressions;
+using QcommentUrlCutter.Logger;
 using QcommentUrlCutter.Models;
 
 namespace QcommentUrlCutter.Helpers
 {
     public static class SettingsHelper
     {
-        public static ApplicationSettings GetApplicationSettings()
+        public static ApplicationSettings GetApplicationSettings(ILogger logger)
         {
+            string settingsFile = Constants.AppsettingsJsonFile;
+
+            RecreateSettingsFileIfEmpty(settingsFile, logger);
+
             ApplicationSettings? settings;
 
-            using (var fs = new FileStream(Constants.AppsettingsJsonFile, FileMode.OpenOrCreate))
+            using (var fs = new FileStream(settingsFile, FileMode.OpenOrCreate))
             {
                 settings = JsonSerializer.Deserialize<ApplicationSettings>(fs);
             }
@@ -18,7 +23,7 @@ namespace QcommentUrlCutter.Helpers
             if (settings is null)
             {
                 throw new JsonException(
-                    $"Failed to deserialize application settings from {Constants.AppsettingsJsonFile}");
+                    $"Failed to deserialize application settings from {settingsFile}");
             }
 
             ValidateApplicationSettings(settings);
@@ -41,6 +46,19 @@ namespace QcommentUrlCutter.Helpers
                     appsettings, new JsonSerializerOptions { WriteIndented = true });
 
             File.WriteAllText(path, json);
+        }
+
+        /*
+            -------------------------------------Utility methods-------------------------------------
+        */
+
+        private static void RecreateSettingsFileIfEmpty(string settingsFile, ILogger logger)
+        {
+            if (new FileInfo(settingsFile).Length == 0)
+            {
+                File.Delete(settingsFile);
+                FileHelper.RecreateFileTextIfNotExists(settingsFile, logger);
+            }
         }
 
         private static void ValidateApplicationSettings(ApplicationSettings settings)

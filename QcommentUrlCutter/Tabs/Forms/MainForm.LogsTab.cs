@@ -1,5 +1,4 @@
-﻿using System.Diagnostics;
-using QcommentUrlCutter.Helpers;
+﻿using QcommentUrlCutter.Helpers;
 using QcommentUrlCutter.Models;
 
 namespace QcommentUrlCutter
@@ -12,6 +11,11 @@ namespace QcommentUrlCutter
         {
             try
             {
+                if (!File.Exists(Constants.LogFile))
+                {
+                    File.Create(Constants.LogFile);
+                }
+
                 string? logs = FileHelper.GetTextFromFile(Constants.LogFile);
                 if (string.IsNullOrWhiteSpace(logs))
                 {
@@ -41,15 +45,18 @@ namespace QcommentUrlCutter
         {
             try
             {
-                FileHelper.ClearFile(Constants.LogFile);
+                if (File.Exists(Constants.LogFile))
+                {
+                    FileHelper.ClearFile(Constants.LogFile);
+
+                    LogsTab_Enter(this, EventArgs.Empty);
+                }
             }
             catch (Exception ex)
             {
                 ExceptionHelper.HandleException(
                     _applicationTitle, nameof(ClearLogsButton_Click), ex, _logger, exitApplication: false);
             }
-
-            LogsTab_Enter(this, EventArgs.Empty);
         }
 
         private void LogsFolderButton_Click(object sender, EventArgs e)
@@ -57,12 +64,12 @@ namespace QcommentUrlCutter
             string filePath = ApplicationState.CurrentDirectory + "\\" + Constants.LogFile;
             string argument = $"/select, {filePath}";
 
-            Process.Start(Constants.ApplicationToOpenFolderDefault, argument);
+            RunFileHelper.RunFile(Constants.ApplicationToOpenFolderDefault, argument, _logger);
         }
 
         private void LogsFileButton_Click(object sender, EventArgs e)
         {
-            Process.Start(_appsettings.ApplicationToOpenFiles, Constants.LogFile);
+            RunFileHelper.RunFile(_appsettings.ApplicationToOpenFiles, Constants.LogFile, _logger);
         }
     }
 }
