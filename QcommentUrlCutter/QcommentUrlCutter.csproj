@@ -17,8 +17,8 @@
     <Copyright>Copyright (C) 2023</Copyright>
     <Description>Application to cut unnecessary URL appended by Qcomment to the required URL and copy processed URL to the clipboard)</Description>
     <PackageIcon>icon.png</PackageIcon>
-    <AssemblyVersion>3.3</AssemblyVersion>
-    <FileVersion>3.3</FileVersion>
+    <AssemblyVersion>3.4</AssemblyVersion>
+    <FileVersion>3.4</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

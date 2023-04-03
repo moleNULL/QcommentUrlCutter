@@ -30,7 +30,15 @@ namespace QcommentUrlCutter.Helpers
                 MessageBoxButtons.OK,
                 MessageBoxIcon.Error);
 
-            logger.Log($"{methodName} Exception: {ex.Message}");
+            try
+            {
+                logger.Log($"{methodName} Exception: {ex.Message}");
+            }
+            catch (Exception)
+            {
+            }
+
+            SoundHelper.PlayExceptionSound();
 
             if (exitApplication)
             {

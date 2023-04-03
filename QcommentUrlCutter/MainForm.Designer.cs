@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             ButtonStart = new Button();
             ButtonStop = new Button();
@@ -54,8 +55,8 @@
             SoundPathFirstButton = new Button();
             SoundPathFirstLabel = new Label();
             RadioButtonChoiceComboBox = new ComboBox();
-            IsButtonClickedOnLaunchComboBox = new ComboBox();
-            IsButtonClickedOnLaunchLabel = new Label();
+            IsStartButtonClickedOnLaunchComboBox = new ComboBox();
+            IsStartButtonClickedOnLaunchLabel = new Label();
             RadioButtonChoiceLabel = new Label();
             UrlPrefixTextBox = new TextBox();
             UrlPrefixLabel = new Label();
@@ -64,6 +65,7 @@
             LogsFileButton = new Button();
             ClearLogsButton = new Button();
             LogsTextBox = new TextBox();
+            LogsTimer = new System.Windows.Forms.Timer(components);
             TabControl.SuspendLayout();
             ApplicationTab.SuspendLayout();
             SettingsTab.SuspendLayout();
@@ -202,8 +204,8 @@
             SettingsTab.Controls.Add(SoundPathFirstButton);
             SettingsTab.Controls.Add(SoundPathFirstLabel);
             SettingsTab.Controls.Add(RadioButtonChoiceComboBox);
-            SettingsTab.Controls.Add(IsButtonClickedOnLaunchComboBox);
-            SettingsTab.Controls.Add(IsButtonClickedOnLaunchLabel);
+            SettingsTab.Controls.Add(IsStartButtonClickedOnLaunchComboBox);
+            SettingsTab.Controls.Add(IsStartButtonClickedOnLaunchLabel);
             SettingsTab.Controls.Add(RadioButtonChoiceLabel);
             SettingsTab.Controls.Add(UrlPrefixTextBox);
             SettingsTab.Controls.Add(UrlPrefixLabel);
@@ -218,7 +220,7 @@
             // 
             // ApplicationToOpenFilesButton
             // 
-            ApplicationToOpenFilesButton.Location = new Point(482, 216);
+            ApplicationToOpenFilesButton.Location = new Point(501, 213);
             ApplicationToOpenFilesButton.Name = "ApplicationToOpenFilesButton";
             ApplicationToOpenFilesButton.Size = new Size(31, 23);
             ApplicationToOpenFilesButton.TabIndex = 23;
@@ -228,7 +230,7 @@
             // 
             // ApplicationToOpenFilesTextBox
             // 
-            ApplicationToOpenFilesTextBox.Location = new Point(178, 216);
+            ApplicationToOpenFilesTextBox.Location = new Point(197, 213);
             ApplicationToOpenFilesTextBox.Name = "ApplicationToOpenFilesTextBox";
             ApplicationToOpenFilesTextBox.Size = new Size(298, 23);
             ApplicationToOpenFilesTextBox.TabIndex = 21;
@@ -237,7 +239,7 @@
             // ApplicationToOpenFilesLabel
             // 
             ApplicationToOpenFilesLabel.AutoSize = true;
-            ApplicationToOpenFilesLabel.Location = new Point(18, 221);
+            ApplicationToOpenFilesLabel.Location = new Point(18, 219);
             ApplicationToOpenFilesLabel.Name = "ApplicationToOpenFilesLabel";
             ApplicationToOpenFilesLabel.Size = new Size(135, 15);
             ApplicationToOpenFilesLabel.TabIndex = 20;
@@ -286,7 +288,7 @@
             // 
             // SoundPathSecondButton
             // 
-            SoundPathSecondButton.Location = new Point(482, 174);
+            SoundPathSecondButton.Location = new Point(501, 171);
             SoundPathSecondButton.Name = "SoundPathSecondButton";
             SoundPathSecondButton.Size = new Size(31, 23);
             SoundPathSecondButton.TabIndex = 15;
@@ -296,7 +298,7 @@
             // 
             // SoundPathSecondTextBox
             // 
-            SoundPathSecondTextBox.Location = new Point(178, 174);
+            SoundPathSecondTextBox.Location = new Point(197, 171);
             SoundPathSecondTextBox.Name = "SoundPathSecondTextBox";
             SoundPathSecondTextBox.Size = new Size(298, 23);
             SoundPathSecondTextBox.TabIndex = 14;
@@ -305,7 +307,7 @@
             // SoundPathSecondLabel
             // 
             SoundPathSecondLabel.AutoSize = true;
-            SoundPathSecondLabel.Location = new Point(18, 179);
+            SoundPathSecondLabel.Location = new Point(18, 177);
             SoundPathSecondLabel.Name = "SoundPathSecondLabel";
             SoundPathSecondLabel.Size = new Size(107, 15);
             SoundPathSecondLabel.TabIndex = 13;
@@ -313,7 +315,7 @@
             // 
             // SoundPathFirstTextBox
             // 
-            SoundPathFirstTextBox.Location = new Point(178, 134);
+            SoundPathFirstTextBox.Location = new Point(196, 132);
             SoundPathFirstTextBox.Name = "SoundPathFirstTextBox";
             SoundPathFirstTextBox.Size = new Size(298, 23);
             SoundPathFirstTextBox.TabIndex = 12;
@@ -321,7 +323,7 @@
             // 
             // SoundPathFirstButton
             // 
-            SoundPathFirstButton.Location = new Point(482, 134);
+            SoundPathFirstButton.Location = new Point(501, 132);
             SoundPathFirstButton.Name = "SoundPathFirstButton";
             SoundPathFirstButton.Size = new Size(31, 23);
             SoundPathFirstButton.TabIndex = 11;
@@ -332,7 +334,7 @@
             // SoundPathFirstLabel
             // 
             SoundPathFirstLabel.AutoSize = true;
-            SoundPathFirstLabel.Location = new Point(18, 140);
+            SoundPathFirstLabel.Location = new Point(18, 138);
             SoundPathFirstLabel.Name = "SoundPathFirstLabel";
             SoundPathFirstLabel.Size = new Size(90, 15);
             SoundPathFirstLabel.TabIndex = 10;
@@ -343,36 +345,36 @@
             RadioButtonChoiceComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
             RadioButtonChoiceComboBox.FormattingEnabled = true;
             RadioButtonChoiceComboBox.Items.AddRange(new object[] { "RadioButton1", "RadioButton2", "NoneButton" });
-            RadioButtonChoiceComboBox.Location = new Point(178, 54);
+            RadioButtonChoiceComboBox.Location = new Point(196, 51);
             RadioButtonChoiceComboBox.Name = "RadioButtonChoiceComboBox";
             RadioButtonChoiceComboBox.Size = new Size(104, 23);
             RadioButtonChoiceComboBox.TabIndex = 9;
             RadioButtonChoiceComboBox.SelectedIndexChanged += RadioButtonChoiceComboBox_SelectedIndexChanged;
             // 
-            // IsButtonClickedOnLaunchComboBox
+            // IsStartButtonClickedOnLaunchComboBox
             // 
-            IsButtonClickedOnLaunchComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-            IsButtonClickedOnLaunchComboBox.FormattingEnabled = true;
-            IsButtonClickedOnLaunchComboBox.Items.AddRange(new object[] { "true", "false" });
-            IsButtonClickedOnLaunchComboBox.Location = new Point(178, 95);
-            IsButtonClickedOnLaunchComboBox.Name = "IsButtonClickedOnLaunchComboBox";
-            IsButtonClickedOnLaunchComboBox.Size = new Size(62, 23);
-            IsButtonClickedOnLaunchComboBox.TabIndex = 8;
-            IsButtonClickedOnLaunchComboBox.SelectedIndexChanged += IsButtonClickedOnLaunchComboBox_SelectedIndexChanged;
+            IsStartButtonClickedOnLaunchComboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+            IsStartButtonClickedOnLaunchComboBox.FormattingEnabled = true;
+            IsStartButtonClickedOnLaunchComboBox.Items.AddRange(new object[] { "true", "false" });
+            IsStartButtonClickedOnLaunchComboBox.Location = new Point(196, 94);
+            IsStartButtonClickedOnLaunchComboBox.Name = "IsStartButtonClickedOnLaunchComboBox";
+            IsStartButtonClickedOnLaunchComboBox.Size = new Size(62, 23);
+            IsStartButtonClickedOnLaunchComboBox.TabIndex = 8;
+            IsStartButtonClickedOnLaunchComboBox.SelectedIndexChanged += IsStartButtonClickedOnLaunchComboBox_SelectedIndexChanged;
             // 
-            // IsButtonClickedOnLaunchLabel
+            // IsStartButtonClickedOnLaunchLabel
             // 
-            IsButtonClickedOnLaunchLabel.AutoSize = true;
-            IsButtonClickedOnLaunchLabel.Location = new Point(18, 99);
-            IsButtonClickedOnLaunchLabel.Name = "IsButtonClickedOnLaunchLabel";
-            IsButtonClickedOnLaunchLabel.Size = new Size(148, 15);
-            IsButtonClickedOnLaunchLabel.TabIndex = 6;
-            IsButtonClickedOnLaunchLabel.Text = "IsButtonClickedOnLaunch:";
+            IsStartButtonClickedOnLaunchLabel.AutoSize = true;
+            IsStartButtonClickedOnLaunchLabel.Location = new Point(18, 99);
+            IsStartButtonClickedOnLaunchLabel.Name = "IsStartButtonClickedOnLaunchLabel";
+            IsStartButtonClickedOnLaunchLabel.Size = new Size(172, 15);
+            IsStartButtonClickedOnLaunchLabel.TabIndex = 6;
+            IsStartButtonClickedOnLaunchLabel.Text = "IsStartButtonClickedOnLaunch:";
             // 
             // RadioButtonChoiceLabel
             // 
             RadioButtonChoiceLabel.AutoSize = true;
-            RadioButtonChoiceLabel.Location = new Point(16, 59);
+            RadioButtonChoiceLabel.Location = new Point(16, 57);
             RadioButtonChoiceLabel.Name = "RadioButtonChoiceLabel";
             RadioButtonChoiceLabel.Size = new Size(113, 15);
             RadioButtonChoiceLabel.TabIndex = 2;
@@ -380,7 +382,7 @@
             // 
             // UrlPrefixTextBox
             // 
-            UrlPrefixTextBox.Location = new Point(178, 12);
+            UrlPrefixTextBox.Location = new Point(196, 10);
             UrlPrefixTextBox.Name = "UrlPrefixTextBox";
             UrlPrefixTextBox.Size = new Size(298, 23);
             UrlPrefixTextBox.TabIndex = 1;
@@ -450,6 +452,12 @@
             LogsTextBox.Size = new Size(641, 265);
             LogsTextBox.TabIndex = 0;
             // 
+            // LogsTimer
+            // 
+            LogsTimer.Enabled = true;
+            LogsTimer.Interval = 500;
+            LogsTimer.Tick += LogsTimer_Tick;
+            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -488,8 +496,8 @@
         private Label UrlPrefixLabel;
         private TextBox UrlPrefixTextBox;
         private Label RadioButtonChoiceLabel;
-        private ComboBox IsButtonClickedOnLaunchComboBox;
-        private Label IsButtonClickedOnLaunchLabel;
+        private ComboBox IsStartButtonClickedOnLaunchComboBox;
+        private Label IsStartButtonClickedOnLaunchLabel;
         private ComboBox RadioButtonChoiceComboBox;
         private Label SoundPathFirstLabel;
         private TextBox SoundPathFirstTextBox;
@@ -509,5 +517,6 @@
         private Button ApplicationToOpenFilesButton;
         private TextBox ApplicationToOpenFilesTextBox;
         private Label ApplicationToOpenFilesLabel;
+        private System.Windows.Forms.Timer LogsTimer;
     }
 }

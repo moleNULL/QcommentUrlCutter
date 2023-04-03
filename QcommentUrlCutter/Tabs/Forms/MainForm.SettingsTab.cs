@@ -15,7 +15,7 @@ namespace QcommentUrlCutter
 
             UrlPrefixTextBox.Text = _appsettings.UrlPrefix;
             RadioButtonChoiceComboBox.Text = _appsettings.RadioButtonChoice;
-            IsButtonClickedOnLaunchComboBox.Text = _appsettings.IsButtonClickedOnLaunch.ToString();
+            IsStartButtonClickedOnLaunchComboBox.Text = _appsettings.IsStartButtonClickedOnLaunch.ToString();
 
             SoundPathFirstTextBox.Text = _appsettings.SoundPathFirst;
             SoundPathSecondTextBox.Text = _appsettings.SoundPathSecond;
@@ -32,16 +32,16 @@ namespace QcommentUrlCutter
             {
                 UrlPrefix = UrlPrefixTextBox.Text,
                 RadioButtonChoice = RadioButtonChoiceComboBox.Text,
-                IsButtonClickedOnLaunch = Convert.ToBoolean(IsButtonClickedOnLaunchComboBox.Text),
+                IsStartButtonClickedOnLaunch = Convert.ToBoolean(IsStartButtonClickedOnLaunchComboBox.Text),
 
                 SoundPathFirst = SoundPathFirstTextBox.Text,
                 SoundPathSecond = SoundPathSecondTextBox.Text
             };
 
-            FileHelper.RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, _logger);
-
             try
             {
+                FileHelper.RecreateFileTextIfNotExists(Constants.AppsettingsJsonFile, _logger);
+
                 SettingsHelper.SaveApplicationSettings(Constants.AppsettingsJsonFile, userSettings);
                 _logger.Log($"Edited {Constants.AppsettingsJsonFile} inside Settings tab");
                 SettingsTab_Enter(this, EventArgs.Empty);
@@ -109,10 +109,10 @@ namespace QcommentUrlCutter
                 RadioButtonChoiceComboBox.Text != _appsettings.RadioButtonChoice);
         }
 
-        private void IsButtonClickedOnLaunchComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        private void IsStartButtonClickedOnLaunchComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             _settingsTabHelper.ToggleButtonEnabledAndHideLabel(
-                IsButtonClickedOnLaunchComboBox.Text != _appsettings.IsButtonClickedOnLaunch.ToString().ToLower());
+                IsStartButtonClickedOnLaunchComboBox.Text != _appsettings.IsStartButtonClickedOnLaunch.ToString().ToLower());
         }
 
         private void SoundPathFirstTextBox_TextChanged(object sender, EventArgs e)
@@ -136,14 +136,31 @@ namespace QcommentUrlCutter
         private void SettingsFolderButton_Click(object sender, EventArgs e)
         {
             string filePath = ApplicationState.CurrentDirectory + "\\" + Constants.AppsettingsJsonFile;
-            string argument = $"/select, {filePath}";
+            string argument = $"/select, ";
 
-            RunFileHelper.RunFile(Constants.ApplicationToOpenFolderDefault, argument, _logger);
+            try
+            {
+                RunFileHelper.RunFile(_logger, Constants.ApplicationToOpenFolderDefault, filePath, argument);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.HandleException(
+                    _applicationTitle, nameof(SettingsFolderButton_Click), ex, _logger, exitApplication: false);
+            }
         }
 
         private void SettingsFileButton_Click(object sender, EventArgs e)
         {
-            RunFileHelper.RunFile(_appsettings.ApplicationToOpenFiles, Constants.AppsettingsJsonFile, _logger);
+            try
+            {
+                RunFileHelper.RunFile(
+                    _logger, _appsettings.ApplicationToOpenFiles, Constants.AppsettingsJsonFile, null);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.HandleException(
+                    _applicationTitle, nameof(SettingsFileButton_Click), ex, _logger, exitApplication: false);
+            }
         }
     }
 }
