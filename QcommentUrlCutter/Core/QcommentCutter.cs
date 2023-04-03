@@ -68,7 +68,7 @@ namespace QcommentUrlCutter.Core
 
             string info = $"QcommentUrl: {clipboardData} -> {formattedUrl}";
             PrintText($"{++_state.CountOutput}. {info}", Constants.QcommentText);
-            _logger.Log(info);
+            _logger.Log($"{info}\n");
         }
 
         private void HandleClipboardText(ref string clipboardData)

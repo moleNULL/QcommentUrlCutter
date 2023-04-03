@@ -31,7 +31,7 @@ namespace QcommentUrlCutter
                 _applicationTabHelper.AssingRadioButtonSoundNames();
                 _applicationTabHelper.CheckRadioButton(_appsettings.RadioButtonChoice);
 
-                if (_appsettings.IsButtonClickedOnLaunch)
+                if (_appsettings.IsStartButtonClickedOnLaunch)
                 {
                     ButtonStart_ClickAsync(this, EventArgs.Empty);
                 }
@@ -55,6 +55,17 @@ namespace QcommentUrlCutter
 
             try
             {
+                _appsettings.IsStartButtonClickedOnLaunch = true;
+                SettingsHelper.SaveApplicationSettings(Constants.AppsettingsJsonFile, _appsettings);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.HandleException(
+                    _applicationTitle, nameof(ButtonStart_ClickAsync), ex, _logger, exitApplication: false);
+            }
+
+            try
+            {
                 var qCutter = new QcommentCutter(
                     _state, clipboardTextBox, _logger, _applicationTabHelper.CheckNoneButton);
                 await qCutter.RunAsync();
@@ -72,15 +83,34 @@ namespace QcommentUrlCutter
 
             ButtonStart.Enabled = true;
             ButtonStop.Enabled = false;
+
+            try
+            {
+                _appsettings.IsStartButtonClickedOnLaunch = false;
+                SettingsHelper.SaveApplicationSettings(Constants.AppsettingsJsonFile, _appsettings);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.HandleException(
+                    _applicationTitle, nameof(ButtonStop_Click), ex, _logger, exitApplication: false);
+            }
         }
 
         private void ApplicationFolderButton_Click(object sender, EventArgs e)
         {
             string filePath = ApplicationState.CurrentDirectory
                 + "\\" + AppDomain.CurrentDomain.FriendlyName + ".exe";
-            string argument = $"/select, {filePath}";
+            string argument = $"/select, ";
 
-            Process.Start(Constants.ApplicationToOpenFolderDefault, argument);
+            try
+            {
+                RunFileHelper.RunFile(_logger, Constants.ApplicationToOpenFolderDefault, filePath, argument);
+            }
+            catch (Exception ex)
+            {
+                ExceptionHelper.HandleException(
+                    _applicationTitle, nameof(ApplicationFolderButton_Click), ex, _logger, exitApplication: false);
+            }
         }
 
         private void RadioButton1_CheckedChanged(object sender, EventArgs e)
@@ -92,7 +122,15 @@ namespace QcommentUrlCutter
                     _state.SoundFile = _appsettings.SoundPathFirst;
                 }
 
-                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton1.Name);
+                try
+                {
+                    SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton1.Name);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHelper.HandleException(
+                        _applicationTitle, nameof(RadioButton1_CheckedChanged), ex, _logger, exitApplication: false);
+                }
             }
         }
 
@@ -105,7 +143,15 @@ namespace QcommentUrlCutter
                     _state.SoundFile = _appsettings.SoundPathSecond;
                 }
 
-                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton2.Name);
+                try
+                {
+                    SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, RadioButton2.Name);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHelper.HandleException(
+                        _applicationTitle, nameof(RadioButton2_CheckedChanged), ex, _logger, exitApplication: false);
+                }
             }
         }
 
@@ -114,7 +160,16 @@ namespace QcommentUrlCutter
             if (NoneButton.Checked)
             {
                 _state.SoundFile = null;
-                SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, NoneButton.Name);
+
+                try
+                {
+                    SettingsHelper.SaveRadioButtonChoiceToFile(_appsettings, NoneButton.Name);
+                }
+                catch (Exception ex)
+                {
+                    ExceptionHelper.HandleException(
+                        _applicationTitle, nameof(NoneButton_CheckedChanged), ex, _logger, exitApplication: false);
+                }
             }
         }
     }

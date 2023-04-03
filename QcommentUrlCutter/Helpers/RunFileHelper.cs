@@ -5,11 +5,11 @@ namespace QcommentUrlCutter.Helpers
 {
     public static class RunFileHelper
     {
-        public static void RunFile(string applicationName, string filePath, ILogger logger)
+        public static void RunFile(ILogger logger, string applicationName, string filePath, string? argument)
         {
             FileHelper.RecreateFileTextIfNotExists(filePath, logger);
 
-            Process.Start(applicationName, filePath);
+            Process.Start(applicationName, (argument ?? string.Empty) + filePath);
         }
     }
 }
